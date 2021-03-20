@@ -1,0 +1,79 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Cache register
+        id: cache-docker-image
+        uses: actions/cache@v2
+        with:
+          path: ./tmp
+          key: |
+            ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
+            ${{ runner.os }}-buildx-${{ hashFiles('**/environment.yml') }}
+
+      - name: Build Docker image if not cached
+        if: steps.cache-docker-image.outputs.cache-hit != 'true'
+        run: ./scripts/docker_image_build.sh
+
+      - name: Save Docker image if not cached
+        if: steps.cache-docker-image.outputs.cache-hit != 'true'
+        run: ./scripts/docker_image_save.sh
+
+      - name: Load cached Docker image
+        run: ./scripts/docker_image_load.sh
+
+      - name: Run Docker container
+        run: ./scripts/docker_container_run.sh
+
+      - name: Run Clang format check
+        run: ./scripts/docker_project_clang_format_check.sh
+
+      - name: Build project
+        run: ./scripts/docker_project_build.sh
+        
+      - name: Run cppcheck
+        run: ./scripts/docker_project_cppcheck.sh
+
+      - name: Test project
+        run: ./scripts/docker_project_test.sh
+
+      - name: Generate Code coverage report
+        run: ./scripts/docker_project_codecov.sh
+
+      - name: Generate Doxygen documentation
+        run: ./scripts/docker_project_doxygen.sh
+
+      - name: Stop Docker container
+        run: ./scripts/docker_container_stop.sh
+        
+      - name: Upload Meson logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: meson-logs
+          path: ./builddir/meson-logs/
+
+      - name: Upload Doxygen files
+        uses: actions/upload-artifact@v2
+        with:
+          name: doxygen-files
+          path: ./docs/Doxygen
+        
+      - name: Upload code coverage reports to codecov.io page
+        run: bash <(curl -s https://codecov.io/bash) 
+
