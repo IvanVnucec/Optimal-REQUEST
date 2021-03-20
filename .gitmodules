@@ -1,0 +1,3 @@
+[submodule "lib/matrix_math"]
+	path = lib/matrix_math
+	url = https://github.com/IvanVnucec/c_matrix_library
