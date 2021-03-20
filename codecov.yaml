@@ -1,0 +1,29 @@
+# About: File to be used to implement codecoverage report on CI server.
+# Author: Ivan Vnucec
+# License WTFPL – Do What the Fuck You Want to Public License. See LICENSE.md file for more information.
+
+ignore:
+  - "**/test/**/*"
+  - "**/test_*.c"
+  - "**/minunit.h"
+
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 0WF28ETLAJDNT0
+  round: down
+  range: "70...100"
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: no

@@ -1,0 +1,9 @@
+PROJECT_NAME            = Optimal-REQUEST
+INPUT                   = ./src README.md
+OUTPUT_DIRECTORY        = docs/Doxygen
+USE_MDFILE_AS_MAINPAGE  = README.md
+OPTIMIZE_OUTPUT_FOR_C   = YES
+SOURCE_BROWSER          = YES
+EXTRACT_STATIC          = YES
+RECURSIVE               = YES
+GENERATE_LATEX          = NO
