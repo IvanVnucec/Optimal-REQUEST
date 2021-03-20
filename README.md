@@ -33,5 +33,11 @@ TODO
 ## Usage
 TODO
 
+## Acknowledges
+Optimal-REQUEST Algorithm for Attitude Determination  
+D. Choukroun, I. Y. Bar-Itzhack and Y. Oshman  
+Published Online:23 May 2012  
+https://doi.org/10.2514/1.10337  
+
 ## License
 [WTFPL – Do What the Fuck You Want to Public License](LICENSE.md)
