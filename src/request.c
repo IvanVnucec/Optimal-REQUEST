@@ -18,7 +18,8 @@
  * 
  * @return int 0
  */
-int main(void) {
+int main(void)
+{
     printf(HELLO_WORLD_STRING);
 
     return 0;
