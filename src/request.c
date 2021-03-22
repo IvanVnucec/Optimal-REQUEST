@@ -9,18 +9,4 @@
  */
 
 #include "request.h"
-
-#include <stddef.h>
-#include <stdio.h>
-
-/**
- * @brief Print "Hello world!" string.
- * 
- * @return int 0
- */
-int main(void)
-{
-    printf(HELLO_WORLD_STRING);
-
-    return 0;
-}
+#include "matrix_math.h"

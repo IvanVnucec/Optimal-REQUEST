@@ -4,22 +4,17 @@
 
 cc = meson.get_compiler('c')
 
-inc = include_directories('./../src/')
+inc = ['./../src']
 
-args = [
-    '-Wall',
-    '-Werror'
-]
-
-m_dep  = cc.find_library('m',  required : true)      # <main.h> library
-rt_dep = cc.find_library('rt', required : true)      # Library used by minunit.h test framework.
+m_dep  = cc.find_library('m',  required : true)
+rt_dep = cc.find_library('rt', required : true)
 
 test_test = executable(
     'test_test', 
     sources:                ['test_test.c'], 
     include_directories:    [inc],
     c_args:                 [args], 
-    dependencies:           [m_dep, rt_dep]
+    dependencies:           [m_dep, rt_dep, matrix_math_dep]
 )
 
 test('test_test', test_test)
