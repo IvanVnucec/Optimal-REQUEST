@@ -27,6 +27,10 @@ MU_TEST_SUITE(test_suite) {
 }
 
 int main(int argc, char *argv[]) {
+
+	(void)argc;
+	(void)argv;
+	
 	MU_RUN_SUITE(test_suite);
 	MU_REPORT();
     
