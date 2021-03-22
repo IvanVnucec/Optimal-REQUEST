@@ -26,7 +26,6 @@ jobs:
           path: ./tmp
           key: |
             ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
-            ${{ runner.os }}-buildx-${{ hashFiles('**/environment.yml') }}
 
       - name: Build Docker image if not cached
         if: steps.cache-docker-image.outputs.cache-hit != 'true'
