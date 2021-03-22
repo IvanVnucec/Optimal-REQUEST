@@ -1,4 +1,0 @@
-# needed by scripts/docker_project_clang_format_check.sh
-
-DisableFormat: true
-SortIncludes: false

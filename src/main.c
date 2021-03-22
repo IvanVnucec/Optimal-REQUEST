@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <stddef.h>
 #include <stdio.h>
 
@@ -21,3 +23,5 @@ int main(void)
 
     return 0;
 }
+
+// clang-format on
