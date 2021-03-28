@@ -4,8 +4,8 @@ function [vk] = get_eigenvector(A, v0, iter)
 %     eigenvector corresponding to the eigenvalue of largest magnitude.
     
     % if ||v0|| != 1 exit with failure
-    ABS = 1e-6;
-    if (abs(norm(v0) - 1.0)) > ABS
+    EPS = 1e-6;
+    if (abs(norm(v0) - 1.0)) > EPS
         error('Initial eigenvector magnitude is not 1.0')
     end
     
