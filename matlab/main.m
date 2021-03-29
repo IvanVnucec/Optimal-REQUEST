@@ -18,6 +18,7 @@ for k = 1 : NUM_OF_ITER
     
     % measurement update
     b = [];
+    r = [];
     w = [];
     Rho = (m^2 * trace(P)) / (m^2 * trace(P) + dm^2 * trace(R));
     mk1 = (1 - Rho) * m + Rho * dmk1;
