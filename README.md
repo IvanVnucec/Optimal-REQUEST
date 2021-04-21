@@ -43,4 +43,4 @@ https://doi.org/10.2514/1.10337
 ```
 
 ## License
-[WTFPL – Do What the Fuck You Want to Public License](LICENSE.md)
+[MIT](LICENSE.md)
