@@ -6,6 +6,9 @@
 % License: MIT
 
 % =========================== notes =============================
+% All numbered equations are from Optimal-REQUEST algorithm 
+% paper unless noted otherwise.
+% 
 % Indexes with k+1 are written without indexes and indexes with 
 % k are written with _k. For example dm_k+1 is written as dm and
 % dm_k is written as dmk.
@@ -22,6 +25,10 @@ dt = 0.01;  % in seconds
 w_meas = zeros(3, NUM_OF_ITER);  % angular velocity
 r_meas = zeros(3, NUM_OF_ITER);  % reference vector
 b_meas = zeros(3, NUM_OF_ITER);  % body vector
+
+% ======================== algorithm output =====================
+K_out = zeros(4, 4, NUM_OF_ITER);
+q_out = zeros(4, 1, NUM_OF_ITER);
 
 % ======================== initialization =======================
 % TODO: how do we set R0?
@@ -46,63 +53,58 @@ for k = 1 : NUM_OF_ITER
     wx = [0, -w(3), w(2); w(3), 0, -w(1); -w(2), w(1), 0];
     
     % eq. 10
-    Omega = 1.0/2 * [-wx, w; -w.', 0];
+    Omega = 1.0 / 2 * [-wx, w; -w', 0];
     
     % eq. 9
     Phi = expm(Omega * dt); % eq. 9
     
     % eq. 11
-    K = Phi * K * Phi.';
+    K = Phi * K * Phi';
     
     Q = calculate_Q(); % TODO: eq. 24, 25, 44
     
     % eq. 69
-    P = Phi * P * Phi.' + Q;
+    P = Phi * P * Phi' + Q;
     
     % ================ measurement update ===============
-    % measure body vector
+    % get body vector measurements
     b = b_meas(:,k);
-    % measure reference vector
+    % get referent vector measurements
     r = r_meas(:,k);
     
-    % dm_k+1, TODO: calculate dmk1, see: REQUEST paper eq. 11a
-    dmk1 = 1.0; 
+    % TODO: calculate dm, see: REQUEST paper eq. 11a
+    dm = 1.0;
     
-    R = calculate_R();  % TODO: eq. 16, 17, 44
+    % TODO: eq. 16, 17, 44
+    R = calculate_R();
     
     % eq. 70
-    Rho = (mk^2 * trace(P)) / (mk^2 * trace(P) ...
-            + dmk1^2 * trace(R));
+    Rho = (mk^2 * trace(P)) / (mk^2 * trace(P) + dm^2 * trace(R));
     
-    % m_k+1 = (1.0 - Rho_k+1) * m_k + Rho_k+1 * dm_k+1, eq. 71
-    mk1 = (1.0 - Rho) * mk + Rho * dmk1;
+    % eq. 71
+    m = (1.0 - Rho) * mk + Rho * dm;
     
     % eq. 72
-    K = (1 - Rho) * mk / mk1 * K + Rho * dmk1 / mk1 * dK;
+    K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
     
     % Calculate dK (eq. 12, 13)
-    B = Rho * b * r.';
-    S = B + B.';
-    zk = Rho * cross(b, r);
+    B = Rho * b * r';
+    S = B + B';
+    z = Rho * cross(b, r);
     Sigma = trace(B);
-    dK = 1 / Rho * [S - Sigma * eye(3), zk; zk.', Sigma];
+    dK = 1.0 / Rho * [S - Sigma * eye(3), z; z', Sigma];
     
-    R = calculate_R(); % TODO: eq. 16, 17, 44
+    % TODO: eq. 16, 17, 44
+    R = calculate_R();
     
     % eq. 73
-    P = ((1 - Rho) * mk / mk1)^2 * P ...
-        + (Rho * dmk1 / mk1)^2 * R;
+    P = ((1.0 - Rho) * mk / m)^2 * P ...
+        + (Rho * dm / m)^2 * R;
     
-    % optimal quaternion
-    q = get_eigenvector(K);
+    % for the next iteration m_k = m_k+1
+    mk = m;   
     
-    % for the next iteration: k = k+1
-    mk = mk1;    
+    % store calculated K and q for debug
+    K_out(:,:,k) = K;
+    q_out(:,:,k) = get_quat_from_K(K);
 end
-
-
-
-
-
-
-
