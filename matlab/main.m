@@ -14,8 +14,10 @@
 % dm_k is written as dmk.
 
 % =========================== START =============================
-clear all;  % for debug
+% for debug
+clear all;
 close all;
+rng('default');
 
 % =========================== constants =========================
 NUM_OF_ITER = 100;
@@ -28,8 +30,8 @@ w_noise_std = 0.1;      % w vector noise sandard deviation
 b_noise_std = 1.0;      % b vector noise sandard deviation
 
 % w/o noise
-w_meas = zeros(3, NUM_OF_ITER);                    % angular velocity
-r_meas = zeros(3, NUM_OF_ITER); r_meas(2,:) = 1.0; % ref. vect.  [0 1 0]'
+w_meas = zeros(3, NUM_OF_ITER);     % angular velocity
+r_meas =  ones(3, NUM_OF_ITER);     % ref. vect.  [1 1 1]'
 b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector [1 0 0]'
 
 % add noise to measurements
