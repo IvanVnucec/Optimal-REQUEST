@@ -22,9 +22,19 @@ NUM_OF_ITER = 100;
 dt = 0.01;  % in seconds
 
 % ======================== vector measurements ==================
+% white Gauss zero mean noise
+% TODO: add units below
+w_noise_std = 0.1;      % w vector noise sandard deviation
+b_noise_std = 1.0;      % b vector noise sandard deviation
+
+% w/o noise
 w_meas = zeros(3, NUM_OF_ITER);                    % angular velocity
 r_meas = zeros(3, NUM_OF_ITER);                    % reference vector
 b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector
+
+% add noise to measurements
+w_meas = w_meas + randn(size(w_meas)) * w_noise_std;
+b_meas = b_meas + randn(size(b_meas)) * b_noise_std;
 
 % ======================== algorithm output =====================
 K_out = zeros(4, 4, NUM_OF_ITER);
