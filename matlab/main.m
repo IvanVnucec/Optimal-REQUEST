@@ -27,25 +27,33 @@ dT = 0.01;  % in seconds
 % white Gauss zero mean noise
 % TODO: add units below
 w_noise_std = 0.1;      % w vector noise sandard deviation
-b_noise_std = 1.0;      % b vector noise sandard deviation
+b_noise_std = 0.15;     % b vector noise sandard deviation
 
 % w/o noise
 w_meas = zeros(3, NUM_OF_ITER);     % angular velocity
-r_meas =  ones(3, NUM_OF_ITER);     % ref. vect.  [1 1 1]'
-b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector [1 0 0]'
+r_meas = zeros(3, NUM_OF_ITER); r_meas(1,:) = 1.0; % ref. vector
+b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector
+
+% normalize measurement vectors
+r_meas = r_meas ./ vecnorm(r_meas);
+b_meas = b_meas ./ vecnorm(b_meas);
+
+% for debug
+angle_b_r = acos(dot(r_meas, b_meas));
 
 % add noise to measurements
 w_meas = w_meas + randn(size(w_meas)) * w_noise_std;
 b_meas = b_meas + randn(size(b_meas)) * b_noise_std;
 
 % normalize measurement vectors
-w_meas = w_meas / norm(w_meas);
-r_meas = r_meas / norm(r_meas);
-b_meas = b_meas / norm(b_meas);
+w_meas = w_meas ./ vecnorm(w_meas);
+r_meas = r_meas ./ vecnorm(r_meas);
+b_meas = b_meas ./ vecnorm(b_meas);
 
 % ======================== algorithm output =====================
 K_out = zeros(4, 4, NUM_OF_ITER);
 q_out = zeros(4, 1, NUM_OF_ITER);
+angle = zeros(1, NUM_OF_ITER);
 
 % ==================== initialization k=1 =======================
 Q0 = calculate_Q(r_meas(:,1), b_meas(:,1), w_noise_std^2, dT);
@@ -117,5 +125,20 @@ for k = 2 : NUM_OF_ITER
     
     % store calculated K and q for debug
     K_out(:,:,k) = K;
-    q_out(:,:,k) = get_quat_from_K(K);
+    q = get_quat_from_K(K);
+    q_out(:,:,k) = q;
+    angle(:,k) = 2.0 * atan2(sqrt(q(2)^2 + q(3)^2 + q(4)^2), q(1));
 end
+
+% plot the angle diff between the real and estimated angle
+diff = pi - abs(abs(mod(angle - angle_b_r, 2*pi)) - pi); 
+plot(diff);
+
+
+
+
+
+
+
+
+
