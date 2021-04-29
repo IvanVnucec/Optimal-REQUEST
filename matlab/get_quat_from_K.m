@@ -1,7 +1,15 @@
 function [q] = get_quat_from_K(K)
-    % use MATLAB functions
+    % with MATLAB functions
+    % get eigenvec
     [V, D] = eig(K);
-    q = V(1);  % TODO: return eigenvector with the largest eigenvalue
+    
+    % sort eigenvectors by eigenvalues
+    [d,ind] = sort(diag(D));
+    Ds = D(ind,ind);
+    Vs = V(:,ind);
+    
+    % pick the one with the largest eigenvalue
+    q = Vs(:,end);
     return
     
     %{
