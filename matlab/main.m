@@ -19,7 +19,7 @@ close all;
 
 % =========================== constants =========================
 NUM_OF_ITER = 100;
-dt = 0.01;  % in seconds
+dT = 0.01;  % in seconds
 
 % ======================== vector measurements ==================
 % white Gauss zero mean noise
@@ -29,32 +29,40 @@ b_noise_std = 1.0;      % b vector noise sandard deviation
 
 % w/o noise
 w_meas = zeros(3, NUM_OF_ITER);                    % angular velocity
-r_meas = zeros(3, NUM_OF_ITER);                    % reference vector
-b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector
+r_meas = zeros(3, NUM_OF_ITER); r_meas(2,:) = 1.0; % ref. vect.  [0 1 0]'
+b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector [1 0 0]'
 
 % add noise to measurements
 w_meas = w_meas + randn(size(w_meas)) * w_noise_std;
 b_meas = b_meas + randn(size(b_meas)) * b_noise_std;
 
+% normalize measurement vectors
+w_meas = w_meas / norm(w_meas);
+r_meas = r_meas / norm(r_meas);
+b_meas = b_meas / norm(b_meas);
+
 % ======================== algorithm output =====================
 K_out = zeros(4, 4, NUM_OF_ITER);
 q_out = zeros(4, 1, NUM_OF_ITER);
 
-% ======================== initialization =======================
-% TODO: how do we set R0?
-R0 = eye(4);
+% ==================== initialization k=1 =======================
+Q0 = calculate_Q(r_meas(:,1), b_meas(:,1), w_noise_std^2, dT);
+R0 = calculate_R(r_meas(:,1), b_meas(:,1), b_noise_std^2);
 
-% TODO: how do we set dm?
-mk = 1.0;
+mk0 = 1.0;
 
-% dK_0, TODO: eq. 12, 13
-dK = 0.001 * eye(4);
+% Rho = 1.0 <=> put all the weight to the measuerements
+Rho0 = 1.0;
+dK0 = calculate_dK(r_meas(:,1), b_meas(:,1), Rho0);
 
+mk = mk0;
+dK = dK0;
 K = dK;
 P = R0;
+Q = Q0;
 
 % ======================== algorithm ============================
-for k = 1 : NUM_OF_ITER
+for k = 2 : NUM_OF_ITER
     % =================== time update ===================
     % get angular velocity measurement
     w = w_meas(:,k);
@@ -66,12 +74,10 @@ for k = 1 : NUM_OF_ITER
     Omega = 1.0 / 2 * [-wx, w; -w', 0];
     
     % eq. 9
-    Phi = expm(Omega * dt); % eq. 9
+    Phi = expm(Omega * dT); % eq. 9
     
     % eq. 11
     K = Phi * K * Phi';
-    
-    Q = calculate_Q(); % TODO: eq. 24, 25, 44
     
     % eq. 69
     P = Phi * P * Phi' + Q;
@@ -82,11 +88,12 @@ for k = 1 : NUM_OF_ITER
     % get referent vector measurements
     r = r_meas(:,k);
     
+    Q = calculate_Q(r, b, w_noise_std^2, dT);
+    
     % TODO: calculate dm, see: REQUEST paper eq. 11a
     dm = 1.0;
     
-    % TODO: eq. 16, 17, 44
-    R = calculate_R();
+    R = calculate_R(r, b, b_noise_std^2);
     
     % eq. 70
     Rho = (mk^2 * trace(P)) / (mk^2 * trace(P) + dm^2 * trace(R));
@@ -94,18 +101,10 @@ for k = 1 : NUM_OF_ITER
     % eq. 71
     m = (1.0 - Rho) * mk + Rho * dm;
     
+    dK = calculate_dK(r, b, Rho);
+    
     % eq. 72
     K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
-    
-    % Calculate dK (eq. 12, 13)
-    B = Rho * b * r';
-    S = B + B';
-    z = Rho * cross(b, r);
-    Sigma = trace(B);
-    dK = 1.0 / Rho * [S - Sigma * eye(3), z; z', Sigma];
-    
-    % TODO: eq. 16, 17, 44
-    R = calculate_R();
     
     % eq. 73
     P = ((1.0 - Rho) * mk / m)^2 * P ...
