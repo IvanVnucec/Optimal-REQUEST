@@ -1,19 +1,29 @@
+% =========================== info ==============================
+% Script for testing the Optimal-REQUEST algorithm.
+% Works in MATLAB or GNU Octave.
+%
+% Author: Ivan Vnučec, 2021
+% License: MIT
+
+% =========================== notes =============================
+% Indexes with k+1 are written without indexes and indexes with 
+% k are written with _k. For example dm_k+1 is written as dm and
+% dm_k is written as dmk.
+
+% =========================== START =============================
 clear all;  % for debug
 close all;
 
-% TODO: Remove index on the variables with index k+1, dmk1 -> dm
-%       and set the variables with index k to dmk, m_k -> mk
-
-% =========================== constants ==============================
+% =========================== constants =========================
 NUM_OF_ITER = 100;
 dt = 0.01;  % in seconds
 
-% ======================== vector measurements ========================
+% ======================== vector measurements ==================
 w_meas = zeros(3, NUM_OF_ITER);  % angular velocity
 r_meas = zeros(3, NUM_OF_ITER);  % reference vector
 b_meas = zeros(3, NUM_OF_ITER);  % body vector
 
-% ======================== initialization ==============================
+% ======================== initialization =======================
 % TODO: how do we set R0?
 R0 = eye(4);
 
@@ -26,7 +36,7 @@ dK = 0.001 * eye(4);
 K = dK;
 P = R0;
 
-% ======================== algorithm ================================
+% ======================== algorithm ============================
 for k = 1 : NUM_OF_ITER
     % =================== time update ===================
     % get angular velocity measurement
