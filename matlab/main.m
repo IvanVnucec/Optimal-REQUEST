@@ -22,9 +22,9 @@ NUM_OF_ITER = 100;
 dt = 0.01;  % in seconds
 
 % ======================== vector measurements ==================
-w_meas = zeros(3, NUM_OF_ITER);  % angular velocity
-r_meas = zeros(3, NUM_OF_ITER);  % reference vector
-b_meas = zeros(3, NUM_OF_ITER);  % body vector
+w_meas = zeros(3, NUM_OF_ITER);                    % angular velocity
+r_meas = zeros(3, NUM_OF_ITER);                    % reference vector
+b_meas = zeros(3, NUM_OF_ITER); b_meas(1,:) = 1.0; % body vector
 
 % ======================== algorithm output =====================
 K_out = zeros(4, 4, NUM_OF_ITER);
