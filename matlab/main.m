@@ -17,7 +17,7 @@
 % for debug
 clear all;
 close all;
-rng('default');
+%rng('default');
 
 % =========================== constants =========================
 NUM_OF_ITER = 100;
@@ -131,7 +131,7 @@ for k = 2 : NUM_OF_ITER
 end
 
 % plot the angle diff between the real and estimated angle
-diff = pi - abs(abs(mod(angle - angle_b_r, 2*pi)) - pi); 
+diff = pi - abs(mod(abs(angle - angle_b_r), 2*pi) - pi);
 plot(diff);
 
 
