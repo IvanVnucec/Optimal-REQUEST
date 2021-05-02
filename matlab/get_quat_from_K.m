@@ -4,8 +4,7 @@ function [q] = get_quat_from_K(K)
     [V, D] = eig(K);
     
     % sort eigenvectors by eigenvalues
-    [d,ind] = sort(diag(D));
-    Ds = D(ind,ind);
+    [~, ind] = sort(diag(D));
     Vs = V(:,ind);
     
     % pick the one with the largest eigenvalue
