@@ -1,16 +1,10 @@
-function [B, S, z, Sigma] = get_util_matrices(r, b, a)
+function [B, S, z, Sigma] = get_util_matrices(K)
 %GET_UTIL_MATRICES Summary of this function goes here
 %   Detailed explanation goes here
-[~, ncols] = size(r);
 
-B = zeros(3, 3);
-z = zeros(3, 1);
-for k = 1 : ncols
-    B = B + a(k) * b(:,k) * r(:,k)';
-    z = z + a(k) * cross(b(:,k), r(:,k));
-end
-
-S = B + B';
-Sigma = trace(B);
+Sigma = K(4,4);
+S = K(1:3,1:3) + Sigma * eye(3);
+B = S/2; % TODO: Calculate B. This is not the correct way.
+z = K(1:3,4);
 
 end

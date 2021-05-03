@@ -113,10 +113,11 @@ for k = 2 : num_of_iter
     % eq. 9
     Phi = expm(Omega * dT); % eq. 9
     
+    [B, ~, z, Sigma] = get_util_matrices(K);
+    Q = calculate_Q(B, z, Sigma, gyr_bdy_meas_noise_std^2, dT);
+    
     % eq. 11
     K = Phi * K * Phi';
-    
-    Q = calculate_Q(B, z, Sigma, gyr_bdy_meas_noise_std^2, dT);
     
     % eq. 69
     P = Phi * P * Phi' + Q;
