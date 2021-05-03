@@ -2,7 +2,7 @@
 % Script for testing the Optimal-REQUEST algorithm.
 % Works in MATLAB or GNU Octave.
 %
-% Author: Ivan Vnučec, 2021
+% Author: Ivan Vnucec, 2021
 % License: MIT
 
 % =========================== notes =============================
@@ -20,10 +20,11 @@ close all;
 rng('default');
 
 % =========================== constants =========================
-dT = 0.01;              % senzor refresh time, in seconds
+dT = 0.1;              % senzor refresh time, in seconds
 simulation_time = 20;   % in seconds
 
 num_of_iter = simulation_time / dT;
+t = linspace(0, simulation_time, num_of_iter);
 
 % ======================== measurements =========================
 % === white Gauss zero mean noise ===
@@ -159,10 +160,18 @@ for k = 2 : num_of_iter
     Rho_out(k) = Rho;
 end
 
-plot(angle_out);
+figure;
+plot(t, rad2deg(angle - angle_out)); 
+title('Real vs Estimated angle'); 
+xlabel('time [s]'); 
+ylabel('angle [deg]');
 
 % plot the optimal filter gain
-figure; plot(Rho_out);
+figure; 
+plot(t, Rho_out); 
+title('Rho vs Time'); 
+xlabel('time [s]'); 
+ylabel('Rho');
 
 
 
