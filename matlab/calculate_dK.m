@@ -1,4 +1,4 @@
-function [dK, dB, dS, dz, dSigma] = calculate_dK(r, b, a)
+function [dK] = calculate_dK(r, b, a)
 %CALCULATE_DK Summary of this function goes here
 %   Detailed explanation goes here
 
