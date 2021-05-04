@@ -79,24 +79,18 @@ b0 = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
 [~, ncols] = size(r0); 
 a0 = ones(1, ncols) / ncols; % equal weights
 
+% set dm0
+dm0 = sum(a0); % see text after eq. 28
+
 % calculate dK0
-[dK0, dB0, dS0, dz0, dSigma0] = calculate_dK(r0, b0, a0);
+[dK0] = calculate_dK(r0, b0, a0);
 
 % calculate R0
 R0 = calculate_R(r0, b0, b_meas_noise_std^2);
 
-% set dm0
-dm0 = sum(a0); % see text after eq. 28
-
 K = dK0; % eq. 3.59
 P = R0;  % eq. 3.60
 mk = dm0; % eq. 3.61
-
-% for calc. of Q
-B = dB0;
-S = dS0;
-z = dz0;
-Sigma = dSigma0;
 
 % ======================== algorithm ============================
 for k = 2 : num_of_iter
@@ -162,7 +156,7 @@ end
 
 figure;
 plot(t, rad2deg(angle - angle_out)); 
-title('Real and Estimated angle difference vs Time');
+title('Real vs Estimated angle difference vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
 
