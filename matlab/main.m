@@ -17,7 +17,7 @@
 % for debug
 clear all;
 close all;
-#rng('default');
+rng('default');
 
 % =========================== constants =========================
 dT = 1;              % senzor refresh time, in seconds
@@ -34,7 +34,8 @@ acc_bdy_meas_noise_std = 0.15;      % m/s
 mag_bdy_meas_noise_std = 100.15;    % nT
 
 % TODO: See how we can calculate b meas nose (see eq. 36)
-b_meas_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std;
+Mu_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std; % for R computation
+Eta_noise_std = gyr_bdy_meas_noise_std;                         % for Q computation
 
 % === w/o noise ===
 % reference
@@ -86,7 +87,7 @@ dm0 = sum(a0); % see text after eq. 28
 [dK0] = calculate_dK(r0, b0, a0);
 
 % calculate R0
-R0 = calculate_R(r0, b0, b_meas_noise_std^2);
+R0 = calculate_R(r0, b0, Mu_noise_std^2);
 
 K = dK0; % eq. 3.59
 P = R0;  % eq. 3.60
@@ -108,7 +109,7 @@ for k = 2 : num_of_iter
     Phi = expm(Omega * dT); % eq. 9
     
     [B, ~, z, Sigma] = get_util_matrices(K);
-    Q = calculate_Q(B, z, Sigma, gyr_bdy_meas_noise_std^2, dT);
+    Q = calculate_Q(B, z, Sigma, Eta_noise_std^2, dT);
     
     % eq. 11
     K = Phi * K * Phi';
@@ -127,7 +128,7 @@ for k = 2 : num_of_iter
     
     dm = sum(a);
     
-    R = calculate_R(r, b, b_meas_noise_std^2);
+    R = calculate_R(r, b, Mu_noise_std^2);
     
     % eq. 70
     Rho = (mk^2 * trace(P)) / (mk^2 * trace(P) + dm^2 * trace(R));
@@ -135,7 +136,7 @@ for k = 2 : num_of_iter
     % eq. 71
     m = (1.0 - Rho) * mk + Rho * dm;
     
-    [dK, ~, ~, ~, ~] = calculate_dK(r, b, a);
+    [dK] = calculate_dK(r, b, a);
     
     % eq. 72
     K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
