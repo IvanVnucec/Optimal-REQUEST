@@ -17,11 +17,11 @@
 % for debug
 clear all;
 close all;
-rng('default');
+#rng('default');
 
 % =========================== constants =========================
-dT = 0.1;              % senzor refresh time, in seconds
-simulation_time = 20;   % in seconds
+dT = 1;              % senzor refresh time, in seconds
+simulation_time = 200;   % in seconds
 
 num_of_iter = simulation_time / dT;
 t = linspace(0, simulation_time, num_of_iter);
@@ -80,7 +80,7 @@ b0 = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
 a0 = ones(1, ncols) / ncols; % equal weights
 
 % calculate dK0
-[dK0, B0, S0, z0, Sigma0] = calculate_dK(r0, b0, a0);
+[dK0, dB0, dS0, dz0, dSigma0] = calculate_dK(r0, b0, a0);
 
 % calculate R0
 R0 = calculate_R(r0, b0, b_meas_noise_std^2);
@@ -93,10 +93,10 @@ P = R0;  % eq. 3.60
 mk = dm0; % eq. 3.61
 
 % for calc. of Q
-B = B0;
-S = S0;
-z = z0;
-Sigma = Sigma0;
+B = dB0;
+S = dS0;
+z = dz0;
+Sigma = dSigma0;
 
 % ======================== algorithm ============================
 for k = 2 : num_of_iter
@@ -141,14 +141,13 @@ for k = 2 : num_of_iter
     % eq. 71
     m = (1.0 - Rho) * mk + Rho * dm;
     
-    [dK, B, S, z, Sigma] = calculate_dK(r, b, a);
+    [dK, ~, ~, ~, ~] = calculate_dK(r, b, a);
     
     % eq. 72
     K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
     
     % eq. 73
-    P = ((1.0 - Rho) * mk / m)^2 * P ...
-        + (Rho * dm / m)^2 * R;
+    P = ((1.0 - Rho) * mk / m)^2 * P + (Rho * dm / m)^2 * R;
     
     % for the next iteration m_k = m_k+1
     mk = m;
@@ -163,7 +162,7 @@ end
 
 figure;
 plot(t, rad2deg(angle - angle_out)); 
-title('Real vs Estimated angle'); 
+title('Real and Estimated angle difference vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
 
