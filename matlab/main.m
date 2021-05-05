@@ -33,7 +33,7 @@ gyr_bdy_meas_noise_std = 0.1;       % rad/s
 acc_bdy_meas_noise_std = 0.15;      % m/s
 mag_bdy_meas_noise_std = 100.15;    % nT
 
-% TODO: See how we can calculate b meas nose (see eq. 36)
+% TODO: See how we can calculate Mu meas nose (see eq. 36)
 Mu_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std; % for R computation
 Eta_noise_std = gyr_bdy_meas_noise_std;                         % for Q computation
 
