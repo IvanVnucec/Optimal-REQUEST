@@ -62,7 +62,6 @@ mag_bdy_meas = mag_bdy_meas + randn(size(mag_bdy_meas)) * mag_bdy_meas_noise_std
 acc_ref_meas = acc_ref_meas ./ vecnorm(acc_ref_meas);
 mag_ref_meas = mag_ref_meas ./ vecnorm(mag_ref_meas);
 % body
-gyr_bdy_meas = gyr_bdy_meas ./ vecnorm(gyr_bdy_meas);
 acc_bdy_meas = acc_bdy_meas ./ vecnorm(acc_bdy_meas);
 mag_bdy_meas = mag_bdy_meas ./ vecnorm(mag_bdy_meas);
 
