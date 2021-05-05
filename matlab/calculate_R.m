@@ -1,26 +1,28 @@
-function [R] = calculate_R(r, b, variance)
-%CALCULATE_Q Summary of this function goes here
-%   Detailed explanation goes here
-% see NOVEL METHODSFORATTITUDE DETERMINATIONUSING VECTOR OBSERVATIONSDaniel Choukroun
-% Appendix B
+function [R] = calculate_R(r, b, var)
+%CALCULATE_R Compute matrice 'R'.
+%   Compute matrice 'R' with reference matrice 'r', body measurements
+%   matrice 'b' and measurement variance 'var'.
+%
+%   Ref. C eq. B.2.2.4a - B.2.2.4d, (for references list see main.m file under reference 
+%   comment section).
 
 [~, ncols] = size(r);
 
 R11 = zeros(3, 3);
-for k = 1 : ncols
-    rk = r(:, k);
-    bk = b(:, k);
+for i = 1 : ncols
+    ri = r(:, i);
+    bi = b(:, i);
     
-    rx = [0, -rk(3), rk(2); rk(3), 0, -rk(1); -rk(2), rk(1), 0];
+    rx = [0, -ri(3), ri(2); ri(3), 0, -ri(1); -ri(2), ri(1), 0];
 
-    R11 = R11 + (3.0 - (rk' * bk)^2) * eye(3) + (bk' * rk) * (bk * rk' + rk * bk') ...
-        + rx * (bk * bk') * rx';
+    R11 = R11 + (3.0 - (ri' * bi)^2) * eye(3) + (bi' * ri) * (bi * ri' + ri * bi') ...
+        + rx * (bi * bi') * rx';
 end
 
-R11 = variance / ncols * R11;
+R11 = var / ncols * R11;
 R12 = zeros(3, 1);
 R21 = R12';
-R22 = 2.0 * variance / ncols;
+R22 = 2.0 * var / ncols;
 
 R = [R11, R12; R21, R22];
 end

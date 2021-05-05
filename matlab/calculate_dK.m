@@ -1,6 +1,11 @@
 function [dK] = calculate_dK(r, b, a)
-%CALCULATE_DK Summary of this function goes here
-%   Detailed explanation goes here
+%CALCULATE_DK Calculate 'dK'.
+%   Calculate 'dK' incremental matrice with reference matrice 'r', body 
+%   matrice 'b' and weights assigned to each column vector in body matrice 
+%   'a'.
+%
+%   Ref. A eq. 11b - 11f, (for references list see main.m file under reference 
+%   comment section).
 
 [~, ncols] = size(r);
 
@@ -13,8 +18,8 @@ for i = 1:ncols
     bi = b(:,i);
     ri = r(:,i);
     
-    dB = dB + ai * bi * ri';
-    dz = dz + ai * cross(bi, ri);
+    dB = dB + ai .* bi * ri';
+    dz = dz + ai .* cross(bi, ri);
     dSigma = dSigma + ai * bi' * ri;
 end
 dS = dB + dB';
