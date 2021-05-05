@@ -1,4 +1,4 @@
-[![CI](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml)
+ciji asistenta-doktoranda za rad na međunarodnim i domaćim projektima u trajanju od 5 godin[![CI](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/IvanVnucec/Optimal-REQUEST/branch/master/graph/badge.svg?token=DIJ1KJMVTM)](https://codecov.io/gh/IvanVnucec/Optimal-REQUEST)
 [![docs](https://img.shields.io/docsrs/regex?color=blue)](https://ivanvnucec.github.io/Optimal-REQUEST/)
 
@@ -35,6 +35,7 @@ TODO
 TODO
 
 ## Testing
+TODO
 
 ## Matlab
 The Optimal-REQUEST algorithm is firstly tested in MATLAB or GNU Octave program. The implementation is located in the `matlab` directory.
