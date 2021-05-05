@@ -160,13 +160,15 @@ plot(t, rad2deg(angle - angle_out));
 title('Real vs Estimated angle difference vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
+grid on;
 
 % plot the optimal filter gain
 figure; 
-plot(t, Rho_out); 
+semilogy(t, Rho_out); 
 title('Rho vs Time'); 
 xlabel('time [s]'); 
 ylabel('Rho');
+grid on;
 
 
 
