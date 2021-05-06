@@ -66,14 +66,14 @@ acc_ref_meas = zeros(3, num_of_iter) + [0 0 -9.81]';            % m/s
 mag_ref_meas = zeros(3, num_of_iter) + [22165.4 1743 42786.9]'; % nT
 
 % rotate reference vectors to create body vectors
-% rotate about vector 'k' by an 'angle' in radians
-k = [1 1 1]';
+% rotate about vector 'n' by an 'angle' in radians
+n = [1 1 1]';
 angle = 2*pi/3;
 
 % body
 gyr_bdy_meas = zeros(3, num_of_iter);               % rad/s
-acc_bdy_meas = rodrigues(acc_ref_meas, k, angle);   % rotated % m/s
-mag_bdy_meas = rodrigues(mag_ref_meas, k, angle);   % rotated % nT
+acc_bdy_meas = rodrigues(acc_ref_meas, n, angle);   % rotated % m/s
+mag_bdy_meas = rodrigues(mag_ref_meas, n, angle);   % rotated % nT
 
 % == add gaussian noise to body measurements ===
 gyr_bdy_meas = gyr_bdy_meas + randn(size(gyr_bdy_meas)) * gyr_bdy_meas_noise_std;
