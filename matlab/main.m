@@ -169,7 +169,7 @@ for k = 2 : num_of_iter
     K_out(:,:,k) = K;
     q = get_quat_from_K(K);
     q_out(:,:,k) = q;
-    angle_out(:,k) = 2.0 * atan2(sqrt(q(2)^2 + q(3)^2 + q(4)^2), q(1));
+    angle_out(:,k) = 2.0 * acos(abs(q(1)));
     Rho_out(k) = Rho;
 end
 
