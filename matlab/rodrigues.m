@@ -12,8 +12,11 @@ k = k / norm(k);
 vrot = zeros(size(v));
 
 for i = 1 : ncols
-    vrot(:,i) = v(:,i) * cos(Theta) + cross(k, v(:,i)) * sin(Theta) + ...
-        k * dot(k, v(:,i)) * (1.0 - cos(Theta));
+    vi = v(:,i);
+    Thetai = Theta(i);
+    
+    vrot(:,i) = vi * cos(Thetai) + cross(k, vi) * sin(Thetai) + ...
+        k * dot(k, vi) * (1.0 - cos(Thetai));
 end
 end
 

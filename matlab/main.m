@@ -44,36 +44,40 @@ close all;
 rng('default');
 
 % =========================== constants =========================
-dT = 0.1;               % senzor refresh time, in seconds
-simulation_time = 500;  % in seconds
+dT = 0.1;              % senzor refresh time, in seconds
+simulation_time = 72;  % in seconds
 
-num_of_iter = simulation_time / dT;
-t = linspace(0, simulation_time, num_of_iter);
+t = 0:dT:simulation_time;
+num_of_iter = length(t);
 
 % ======================== measurements =========================
+% === import simulated data ===
+filename = 'measurements.csv';
+data_from_file = importdata(filename);
+data_from_file = struct2cell(data_from_file);
+data = data_from_file{1};
+
+acc_ref_meas = data(:,1:3)';         % ref. acc. m/s^2
+mag_ref_meas = data(:,4:6)';         % ref. mag. uT
+
+acc_bdy_meas = data(:,10:12)';       % body acc. m/s^2
+mag_bdy_meas = data(:,13:15)';       % body mag. uT
+gyr_bdy_meas = data(:,16:18)';       % body ang. vel. rad/s
+
+qib_gt = data(:,19:22)';             % ground truh quat.
+angle_real = 2.0 * acos(abs(qib_gt(1,:)));
+
+euler_est = zeros(3, num_of_iter);
+euler_gt = zeros(3, num_of_iter);
+
 % === white Gauss zero mean noise ===
-gyr_bdy_meas_noise_std = 0.1;       % rad/s
-acc_bdy_meas_noise_std = 0.15;      % m/s
-mag_bdy_meas_noise_std = 100.15;    % nT
+gyr_bdy_meas_noise_std = 0.001;       % rad/s
+acc_bdy_meas_noise_std = 0.1;       % m/s^2
+mag_bdy_meas_noise_std = 0.1;       % uT
 
 % TODO: See how we can calculate Mu meas nose (see eq. 36)
 Mu_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std; % for R computation
 Eta_noise_std = gyr_bdy_meas_noise_std;                         % for Q computation
-
-% === w/o noise ===
-% reference
-acc_ref_meas = zeros(3, num_of_iter) + [0 0 -9.81]';            % m/s
-mag_ref_meas = zeros(3, num_of_iter) + [22165.4 1743 42786.9]'; % nT
-
-% rotate reference vectors to create body vectors
-% rotate about vector 'n' by an 'angle' in radians
-n = [1 1 1]';
-angle = 2*pi/3;
-
-% body
-gyr_bdy_meas = zeros(3, num_of_iter);               % rad/s
-acc_bdy_meas = rodrigues(acc_ref_meas, n, angle);   % rotated % m/s
-mag_bdy_meas = rodrigues(mag_ref_meas, n, angle);   % rotated % nT
 
 % == add gaussian noise to body measurements ===
 gyr_bdy_meas = gyr_bdy_meas + randn(size(gyr_bdy_meas)) * gyr_bdy_meas_noise_std;
@@ -171,23 +175,65 @@ for k = 2 : num_of_iter
     q_out(:,:,k) = q;
     angle_out(:,k) = 2.0 * acos(abs(q(1)));
     Rho_out(k) = Rho;
+      
+    euler_est(:,k) = qib2Euler(q);
+    euler_gt(:,k) = qib2Euler(qib_gt(:,k));
 end
 
+% plot real and estimated angle
+subplot(3,1,1);
+hold on;
+plot(t, rad2deg(angle_real));
+plot(t, rad2deg(angle_out));
+title('Real and Estimated angle vs Time');
+xlabel('time [s]'); 
+ylabel('angle [deg]');
+legend('Real angle', 'Estimated angle')
+grid on;
+
 % plot angle difference between real and estimated angle
-figure;
-plot(t, rad2deg(angle - angle_out)); 
+subplot(3,1,2);
+plot(t, rad2deg(angle_real - angle_out)); 
 title('Real vs Estimated angle difference vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
 grid on;
 
 % plot the optimal filter gain
-figure; 
+subplot(3,1,3);
 semilogy(t, Rho_out); 
 title('Rho vs Time'); 
 xlabel('time [s]'); 
 ylabel('Rho');
 grid on;
+
+figure;
+subplot(3,1,1);
+plot(t, euler_gt(1,:), t, euler_est(1,:));
+ylim([-180 180]);
+grid on;
+title('Real and Estimated Euler angle vs Time');
+legend('Real angle', 'Estimated angle')
+xlabel('Time [s]');
+ylabel('Psi [deg]');
+
+subplot(3,1,2);
+plot(t, euler_gt(2,:), t, euler_est(2,:));
+ylim([-180 180]);
+grid on;
+title('Real and Estimated Euler angle vs Time');
+legend('Real angle', 'Estimated angle')
+xlabel('Time [s]');
+ylabel('Theta [deg]');
+
+subplot(3,1,3);
+plot(t, euler_gt(3,:), t, euler_est(3,:));
+ylim([-180 180]);
+grid on;
+title('Real and Estimated Euler angle vs Time');
+legend('Real angle', 'Estimated angle')
+xlabel('Time [s]');
+ylabel('Phi [deg]');
 
 
 
