@@ -4,7 +4,7 @@ function [q] = get_quat_from_K(K)
 %   The returned vector is quaternion rotation.
 %
 %   Ref. B states:
-%   The optimal quaternionˆqk+1/k+1is the eigenvector ofKk+1/k+1,which belongs to its maximal eigenvalue.
+%   The optimal quaternionË†qk+1/k+1is the eigenvector ofKk+1/k+1,which belongs to its maximal eigenvalue.
 
 % get eigenvector
 [V, D] = eig(K);
@@ -15,5 +15,8 @@ Vs = V(:,ind);
 
 % pick the one with the largest eigenvalue which is at the end
 q = Vs(:,end);
-end
 
+% Ref. B eq. 3 (text under), we are using different quaternion representation
+q = [q(4); q(1:3)];
+
+end
