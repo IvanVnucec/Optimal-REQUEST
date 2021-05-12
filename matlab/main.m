@@ -108,7 +108,7 @@ b0 = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
 a0 = ones(1, ncols) ./ ncols; % equal weights
 
 dm0 = sum(a0); % Ref. A eq. 11a
-[dK0] = calculate_dK(r0, b0, a0);
+dK0 = calculate_dK(r0, b0, a0);
 R0 = calculate_R(r0, b0, Mu_noise_std^2);
 
 K = dK0;    % Ref. B eq. 65
@@ -158,7 +158,7 @@ for k = 2 : num_of_iter
     % Ref. B eq. 71
     m = (1.0 - Rho) * mk + Rho * dm;
     
-    [dK] = calculate_dK(r, b, a);
+    dK = calculate_dK(r, b, a);
     
     % Ref. B eq. 72
     K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
