@@ -71,9 +71,9 @@ euler_est = zeros(3, num_of_iter);
 euler_gt = zeros(3, num_of_iter);
 
 % === white Gauss zero mean noise ===
-gyr_bdy_meas_noise_std = 0.001;       % rad/s
-acc_bdy_meas_noise_std = 0.1;       % m/s^2
-mag_bdy_meas_noise_std = 0.1;       % uT
+gyr_bdy_meas_noise_std = 0.01;       % rad/s
+acc_bdy_meas_noise_std = 0.01;       % m/s^2
+mag_bdy_meas_noise_std = 10.0;       % uT
 
 % TODO: See how we can calculate Mu meas nose (see eq. 36)
 Mu_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std; % for R computation
