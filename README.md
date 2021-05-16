@@ -38,7 +38,7 @@ TODO
 TODO
 
 ## Matlab
-The Optimal-REQUEST algorithm is firstly tested in MATLAB or GNU Octave program. The implementation is located in the `matlab` directory.
+The Optimal-REQUEST algorithm was firstly implemented in MATLAB. The implementation is located in the `matlab` directory.
 
 ## Acknowledges
 ```
