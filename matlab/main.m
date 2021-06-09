@@ -8,18 +8,15 @@
 % License: MIT
 
 % =========================== START =============================
-% for debug
-clear all;
-close all;
-rng('default'); % comment this line if running on GNU Octave
+
 
 % ======================== measurements =========================
 % === import simulated data ===
 generate_measurements
 
 % === white Gauss zero mean noise ===
-gyr_bdy_meas_noise_std = 0.1;       % rad/s
-acc_bdy_meas_noise_std = 0.1;       % m/s^2
+gyr_bdy_meas_noise_std = 0.01;       % rad/s
+acc_bdy_meas_noise_std = 0.01;       % m/s^2
 mag_bdy_meas_noise_std = 10.0;      % uT
 
 % === compute Mu and Eta noise variances for Q and R computation ===
@@ -31,7 +28,6 @@ norm_acc_bdy_std = acc_bdy_meas_noise_std / mean_acc_bdy_len;
 norm_mag_bdy_std = mag_bdy_meas_noise_std / mean_mag_bdy_len;
 % calculate normalized variances
 Mu_noise_var = norm_acc_bdy_std^2 + norm_mag_bdy_std^2;
-Mu_noise_var_fact = 1;  % TODO: Delete this after testing finishes.
 Mu_noise_var = Mu_noise_var * Mu_noise_var_fact;
 % for Q computation
 Eta_noise_var = gyr_bdy_meas_noise_std^2;
@@ -100,68 +96,9 @@ for k = 2 : num_of_iter
     P_est(:,:,k) = P;
 end
 
-% plot Euler angles and difference in Euler angles
-figure(1);
-subplot(3,1,1);
-plot(t, rad2deg(angdiff(euler_gt(1,:), euler_est(1,:))));
-grid on;
-title('Real and Estimated Euler angle difference vs Time');
-xlabel('Time [s]');
-ylabel('Psi [deg]');
-
-subplot(3,1,2);
-plot(t, rad2deg(angdiff(euler_gt(2,:), euler_est(2,:))));
-grid on;
-title('Real and Estimated Euler angle difference vs Time');
-xlabel('Time [s]');
-ylabel('Theta [deg]');
-
-subplot(3,1,3);
-plot(t, rad2deg(angdiff(euler_gt(3,:), euler_est(3,:))));
-grid on;
-title('Real and Estimated Euler angle difference vs Time');
-xlabel('Time [s]');
-ylabel('Phi [deg]');
-
-% plot real and estimated angle
-figure(2);
-subplot(3,1,1);
-hold on;
-plot(t, rad2deg(angle_gt));
-plot(t, rad2deg(angle_est));
-title('Real and Estimated angle vs Time');
-xlabel('time [s]'); 
-ylabel('angle [deg]');
-grid on;
-
-% plot angle difference between real and estimated angle
-subplot(3,1,2);
-plot(t, rad2deg(angdiff(angle_gt, angle_est))); 
-title('Real vs Estimated angle difference vs Time');
-xlabel('time [s]'); 
-ylabel('angle [deg]');
-grid on;
-
-% plot the optimal filter gain
-subplot(3,1,3);
-semilogy(t, Rho_est); 
-title('Rho vs Time'); 
-xlabel('time [s]'); 
-ylabel('Rho');
-grid on;
-
 alg_err = angdiff(euler_gt, euler_est).^2;
 alg_err = sum(alg_err);
 alg_err = alg_err .* Rho_est;
-fprintf('fac = %f\n', Mu_noise_var_fact);
-fprintf('avg = %f\n', mean(alg_err));
-fprintf('std = %f\n', var(alg_err)^0.5);
-
-figure(3);
-plot(20*log(alg_err));
-grid on;
-    
-    
     
     
     

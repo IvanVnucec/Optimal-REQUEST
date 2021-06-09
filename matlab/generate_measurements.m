@@ -7,8 +7,8 @@
 % Date: 2021
 
 
-simulation_time  = 72;  % Simulation time in seconds
-dT = 0.1;               % Sampling time in seconds
+simulation_time  = 2000;  % Simulation time in seconds
+dT = 10;               % Sampling time in seconds
 n  = [0, 0, 1]';        % Rotation vector (unnormalized)
 omega = 1;             % Angular velocity around rotation vector in rad/s
 
