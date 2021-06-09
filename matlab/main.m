@@ -150,7 +150,7 @@ xlabel('time [s]');
 ylabel('Rho');
 grid on;
 
-alg_err = angdiff(euler_gt, euler_est).^2;
+alg_err = angle_diff(euler_gt, euler_est).^2;
 alg_err = sum(alg_err);
 alg_err = alg_err .* Rho_est;
 fprintf('fac = %f\n', Mu_noise_var_fact);
