@@ -44,45 +44,39 @@ close all;
 rng('default');
 
 % =========================== constants =========================
-dT = 0.1;              % senzor refresh time, in seconds
-simulation_time = 72;  % in seconds
+%dT = 0.1;              % senzor refresh time, in seconds
+%simulation_time = 72;  % in seconds
 
-t = 0:dT:simulation_time;
-num_of_iter = length(t);
+%t = 0:dT:simulation_time;
+%num_of_iter = length(t);
 
 % ======================== measurements =========================
 % === import simulated data ===
-filename = 'measurements.csv';
-data_from_file = importdata(filename);
-data_from_file = struct2cell(data_from_file);
-data = data_from_file{1};
-
-acc_ref_meas = data(:,1:3)';         % ref. acc. m/s^2
-mag_ref_meas = data(:,4:6)';         % ref. mag. uT
-
-acc_bdy_meas = data(:,10:12)';       % body acc. m/s^2
-mag_bdy_meas = data(:,13:15)';       % body mag. uT
-gyr_bdy_meas = data(:,16:18)';       % body ang. vel. rad/s
-
-qib_gt = data(:,19:22)';             % ground truh quat.
-angle_real = 2.0 * acos(abs(qib_gt(1,:)));
-
-euler_est = zeros(3, num_of_iter);
-euler_gt = zeros(3, num_of_iter);
+generate_measurements
 
 % === white Gauss zero mean noise ===
-gyr_bdy_meas_noise_std = 0.01;       % rad/s
-acc_bdy_meas_noise_std = 0.01;       % m/s^2
+gyr_bdy_meas_noise_std = 0.1;       % rad/s
+acc_bdy_meas_noise_std = 0.1;       % m/s^2
 mag_bdy_meas_noise_std = 10.0;       % uT
 
-% TODO: See how we can calculate Mu meas nose (see eq. 36)
-Mu_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std; % for R computation
-Eta_noise_std = gyr_bdy_meas_noise_std;                         % for Q computation
+% === compute Mu and Eta noise variances for Q and R computation ===
+% for R computation
+mean_acc_bdy_len = mean(vecnorm(acc_bdy_meas_true));     % m/s^2
+mean_mag_bdy_len = mean(vecnorm(mag_bdy_meas_true));     % uT
+% normalize noise std to vector mean
+norm_acc_bdy_std = acc_bdy_meas_noise_std / mean_acc_bdy_len;
+norm_mag_bdy_std = mag_bdy_meas_noise_std / mean_mag_bdy_len;
+% calculate normalized variances
+Mu_noise_var = norm_acc_bdy_std^2 + norm_mag_bdy_std^2;
+Mu_noise_var_fact = 1;
+Mu_noise_var = Mu_noise_var * Mu_noise_var_fact;
+% for Q computation
+Eta_noise_var = gyr_bdy_meas_noise_std^2;
 
-% == add gaussian noise to body measurements ===
-gyr_bdy_meas = gyr_bdy_meas + randn(size(gyr_bdy_meas)) * gyr_bdy_meas_noise_std;
-acc_bdy_meas = acc_bdy_meas + randn(size(acc_bdy_meas)) * acc_bdy_meas_noise_std;
-mag_bdy_meas = mag_bdy_meas + randn(size(mag_bdy_meas)) * mag_bdy_meas_noise_std;
+% === add gaussian noise to body measurements ===
+gyr_bdy_meas = gyr_bdy_meas_true + randn(size(gyr_bdy_meas_true)) * gyr_bdy_meas_noise_std;
+acc_bdy_meas = acc_bdy_meas_true + randn(size(acc_bdy_meas_true)) * acc_bdy_meas_noise_std;
+mag_bdy_meas = mag_bdy_meas_true + randn(size(mag_bdy_meas_true)) * mag_bdy_meas_noise_std;
 
 % === normalize measurement vectors ===
 % reference
@@ -92,11 +86,16 @@ mag_ref_meas = mag_ref_meas ./ vecnorm(mag_ref_meas);
 acc_bdy_meas = acc_bdy_meas ./ vecnorm(acc_bdy_meas);
 mag_bdy_meas = mag_bdy_meas ./ vecnorm(mag_bdy_meas);
 
+acc_bdy_meas_true = acc_bdy_meas_true ./ vecnorm(acc_bdy_meas_true);
+mag_bdy_meas_true = mag_bdy_meas_true ./ vecnorm(mag_bdy_meas_true);
+
 % ======================== algorithm output =====================
-K_out = zeros(4, 4, num_of_iter);
-q_out = zeros(4, 1, num_of_iter);
-angle_out = zeros(1, num_of_iter);
-Rho_out = zeros(1, num_of_iter);
+K_est = zeros(4, 4, num_of_iter);
+q_est = zeros(4, num_of_iter);
+euler_est = zeros(3, num_of_iter);
+angle_est = zeros(1, num_of_iter);
+Rho_est = zeros(1, num_of_iter);
+P_est = zeros(4, 4, num_of_iter);
 
 % ==================== initialization k=0 =======================
 k = 1; % k=1 because of MATLAB counting from 1 and not from 0
@@ -109,7 +108,7 @@ a0 = ones(1, ncols) ./ ncols; % equal weights
 
 dm0 = sum(a0); % Ref. A eq. 11a
 dK0 = calculate_dK(r0, b0, a0);
-R0 = calculate_R(r0, b0, Mu_noise_std^2);
+R0 = calculate_R(r0, b0, Mu_noise_var);
 
 K = dK0;    % Ref. B eq. 65
 P = R0;     % Ref. B eq. 66
@@ -131,7 +130,7 @@ for k = 2 : num_of_iter
     Phi = expm(Omega * dT); % eq. 9
     
     [B, ~, z, Sigma] = get_util_matrices(K);
-    Q = calculate_Q(B, z, Sigma, Eta_noise_std^2, dT);
+    Q = calculate_Q(B, z, Sigma, Eta_noise_var, dT);
     
     % Ref. B eq. 11
     K = Phi * K * Phi';
@@ -150,7 +149,7 @@ for k = 2 : num_of_iter
     
     dm = sum(a);
     
-    R = calculate_R(r, b, Mu_noise_std^2);
+    R = calculate_R(r, b, Mu_noise_var);
     
     % Ref. B eq. 70
     Rho = (mk^2 * trace(P)) / (mk^2 * trace(P) + dm^2 * trace(R));
@@ -170,30 +169,52 @@ for k = 2 : num_of_iter
     mk = m;
     
     % store calculated K and q for debug
-    K_out(:,:,k) = K;
+    K_est(:,:,k) = K;
     q = get_quat_from_K(K);
-    q_out(:,:,k) = q;
-    angle_out(:,k) = 2.0 * acos(abs(q(1)));
-    Rho_out(k) = Rho;
-      
+    q_est(:,k) = q;
+    angle_est(:,k) = 2.0 * acos(abs(q(1)));
     euler_est(:,k) = qib2Euler(q);
-    euler_gt(:,k) = qib2Euler(qib_gt(:,k));
+    Rho_est(k) = Rho;
+    P_est(:,:,k) = P;
 end
 
+% plot Euler angles and difference in Euler angles
+figure(1);
+subplot(3,1,1);
+plot(t, rad2deg(angdiff(euler_gt(1,:), euler_est(1,:))));
+grid on;
+title('Real and Estimated Euler angle difference vs Time');
+xlabel('Time [s]');
+ylabel('Psi [deg]');
+
+subplot(3,1,2);
+plot(t, rad2deg(angdiff(euler_gt(2,:), euler_est(2,:))));
+grid on;
+title('Real and Estimated Euler angle difference vs Time');
+xlabel('Time [s]');
+ylabel('Theta [deg]');
+
+subplot(3,1,3);
+plot(t, rad2deg(angdiff(euler_gt(3,:), euler_est(3,:))));
+grid on;
+title('Real and Estimated Euler angle difference vs Time');
+xlabel('Time [s]');
+ylabel('Phi [deg]');
+
 % plot real and estimated angle
+figure(2);
 subplot(3,1,1);
 hold on;
-plot(t, rad2deg(angle_real));
-plot(t, rad2deg(angle_out));
+plot(t, rad2deg(angle_gt));
+plot(t, rad2deg(angle_est));
 title('Real and Estimated angle vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
-legend('Real angle', 'Estimated angle')
 grid on;
 
 % plot angle difference between real and estimated angle
 subplot(3,1,2);
-plot(t, rad2deg(angle_real - angle_out)); 
+plot(t, rad2deg(angdiff(angle_gt, angle_est))); 
 title('Real vs Estimated angle difference vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
@@ -201,44 +222,37 @@ grid on;
 
 % plot the optimal filter gain
 subplot(3,1,3);
-semilogy(t, Rho_out); 
+semilogy(t, Rho_est); 
 title('Rho vs Time'); 
 xlabel('time [s]'); 
 ylabel('Rho');
 grid on;
 
-figure;
-subplot(3,1,1);
-plot(t, euler_gt(1,:), t, euler_est(1,:));
-ylim([-180 180]);
+alg_err = angdiff(euler_gt, euler_est).^2;
+alg_err = sum(alg_err);
+alg_err = alg_err .* Rho_est;
+fprintf('fac = %f\n', Mu_noise_var_fact);
+fprintf('avg = %f\n', mean(alg_err));
+fprintf('std = %f\n', var(alg_err)^0.5);
+
+figure(3);
+plot(20*log(alg_err));
 grid on;
-title('Real and Estimated Euler angle vs Time');
-legend('Real angle', 'Estimated angle')
-xlabel('Time [s]');
-ylabel('Psi [deg]');
-
-subplot(3,1,2);
-plot(t, euler_gt(2,:), t, euler_est(2,:));
-ylim([-180 180]);
-grid on;
-title('Real and Estimated Euler angle vs Time');
-legend('Real angle', 'Estimated angle')
-xlabel('Time [s]');
-ylabel('Theta [deg]');
-
-subplot(3,1,3);
-plot(t, euler_gt(3,:), t, euler_est(3,:));
-ylim([-180 180]);
-grid on;
-title('Real and Estimated Euler angle vs Time');
-legend('Real angle', 'Estimated angle')
-xlabel('Time [s]');
-ylabel('Phi [deg]');
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
