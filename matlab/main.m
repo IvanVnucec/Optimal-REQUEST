@@ -12,6 +12,7 @@
 clear all;
 close all;
 rng('default'); % comment this line if running on GNU Octave
+colordef black;
 
 % ======================== measurements =========================
 % === import simulated data ===
