@@ -104,52 +104,19 @@ envel = [up; lo]';
 plot(envel, 'r');
 hold off
 
-Mu_noise_var_fact = 10;
-main
-figure(1)
-hold on
-plot(log(Rho_est))
-hold off
-figure(2)
-hold on
-diff = rad2deg(angle_diff(euler_gt, euler_est));
-plot(diff(1,:));
-hold off
-figure(3)
-hold on
-diff = rad2deg(angle_diff(euler_gt, euler_est));
-plot(diff(2,:));
-hold off
-figure(4)
-hold on
-diff = rad2deg(angle_diff(euler_gt, euler_est));
-plot(diff(3,:));
-hold off
-figure(5)
-hold on
-diff = rad2deg(angle_diff(angle_est, angle_gt));
-plot(diff);
-hold off
-figure(6)
-hold on
-[up, lo] = envelope(diff, 30, 'peak');
-envel = [up; lo]';
-plot(envel, 'g');
-hold off
-
 figure(1); 
-legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01', 'var = var * 10');
+legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01');
 figure(2); 
-legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01', 'var = var * 10');
+legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01');
 figure(3); 
-legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01', 'var = var * 10');
+legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01');
 figure(4); 
-legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01', 'var = var * 10');
+legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01');
 figure(5); 
-legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01', 'var = var * 10');
+legend('var = var * 1', 'var = var * 0.1', 'var = var * 0.01');
 figure(6); 
 dim = [0 0 0.3 0.3];
-str = {'ZUTO var = var * 1', 'PLAVO var = var * 0.1', 'CRVENO var = var * 0.01', 'ZELENO var = var * 10'};
+str = {'ZUTO var = var * 1', 'PLAVO var = var * 0.1', 'CRVENO var = var * 0.01'};
 t = annotation('textbox',dim,'String',str,'FitBoxToText','on');
 t.BackgroundColor = 'white';
 
