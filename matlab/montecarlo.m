@@ -1,39 +1,37 @@
 
 % for debug
 clear all;
-close all;
-rng('default'); % comment this line if running on GNU Octave
 colordef black
 
-Mu_noise_var_fact = 1;
-main
-e = angle_diff(euler_est, euler_gt).^2;
-ms_e = sum(e, 2)/length(e);
-rms_e = sqrt(ms_e);
-fprintf('factor = %f -> rms_error = [%f %f %f] rad\n', Mu_noise_var_fact, rms_e);
+iter = 100;
 
-Mu_noise_var_fact = 0.1;
-main
-e = angle_diff(euler_est, euler_gt).^2;
-ms_e = sum(e, 2)/length(e);
-rms_e = sqrt(ms_e);
-fprintf('factor = %f -> rms_error = [%f %f %f] rad\n', Mu_noise_var_fact, rms_e);
+Mu_noise_var_factors = 0.05 + (0.3-0.05) * rand(1, iter); 
+rms_errors = zeros(3, iter);
 
-Mu_noise_var_fact = 0.01;
-main
-e = angle_diff(euler_est, euler_gt).^2;
-ms_e = sum(e, 2)/length(e);
-rms_e = sqrt(ms_e);
-fprintf('factor = %f -> rms_error = [%f %f %f] rad\n', Mu_noise_var_fact, rms_e);
+hold on
+for j = 1:10
+    generate_measurements
+    Mu_noise_var_const = Mu_noise_var;
+for steps = 1 : iter
+    Mu_noise_var = Mu_noise_var_const * Mu_noise_var_factors(steps);
+   
+    main
 
+    e = angle_diff(euler_est, euler_gt).^2;
+    ms_e = mean(e, 2);
+    rms_errors(:,steps) = sqrt(ms_e);
+end
 
+errors = sqrt(sum(rms_errors.^2));
+[min_error, index] = min(errors);
+fprintf('factor = %f -> rms_error = [%f %f %f] rad\n', ...
+    Mu_noise_var_factors(index), rms_errors(:,index));
 
-
-
-
-
-
-
+scatter(Mu_noise_var_factors, errors)
+end
+hold off
+xlabel('variance factor');
+ylabel('angle RMS error');
 
 
 
