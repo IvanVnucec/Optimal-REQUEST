@@ -151,6 +151,7 @@ xlabel('time [s]');
 ylabel('Rho');
 grid on;
 
+% TODO: Delete this after testing finishes.
 alg_err = angle_diff(euler_gt, euler_est).^2;
 alg_err = sum(alg_err);
 alg_err = alg_err .* Rho_est;
