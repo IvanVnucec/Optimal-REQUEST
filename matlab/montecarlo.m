@@ -13,27 +13,27 @@ plot(log(Rho_est))
 hold off
 figure(2)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(1,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(1,:));
 hold off
 figure(3)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(2,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(2,:));
 hold off
 figure(4)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(3,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(3,:));
 hold off
 figure(5)
 hold on
-angle_diff = rad2deg(angdiff(angle_est, angle_gt));
-plot(angle_diff);
+diff = rad2deg(angle_diff(angle_est, angle_gt));
+plot(diff);
 hold off
 figure(6)
 hold on
-[up, lo] = envelope(angle_diff, 30, 'peak');
+[up, lo] = envelope(diff, 30, 'peak');
 envel = [up; lo]';
 plot(envel, 'y');
 hold off
@@ -46,27 +46,27 @@ plot(log(Rho_est))
 hold off
 figure(2)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(1,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(1,:));
 hold off
 figure(3)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(2,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(2,:));
 hold off
 figure(4)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(3,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(3,:));
 hold off
 figure(5)
 hold on
-angle_diff = rad2deg(angdiff(angle_est, angle_gt));
-plot(angle_diff);
+diff = rad2deg(angle_diff(angle_est, angle_gt));
+plot(diff);
 hold off
 figure(6)
 hold on
-[up, lo] = envelope(angle_diff, 30, 'peak');
+[up, lo] = envelope(diff, 30, 'peak');
 envel = [up; lo]';
 plot(envel, 'b');
 hold off
@@ -79,27 +79,27 @@ plot(log(Rho_est))
 hold off
 figure(2)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(1,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(1,:));
 hold off
 figure(3)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(2,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(2,:));
 hold off
 figure(4)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(3,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(3,:));
 hold off
 figure(5)
 hold on
-angle_diff = rad2deg(angdiff(angle_est, angle_gt));
-plot(angle_diff);
+diff = rad2deg(angle_diff(angle_est, angle_gt));
+plot(diff);
 hold off
 figure(6)
 hold on
-[up, lo] = envelope(angle_diff, 30, 'peak');
+[up, lo] = envelope(diff, 30, 'peak');
 envel = [up; lo]';
 plot(envel, 'r');
 hold off
@@ -112,27 +112,27 @@ plot(log(Rho_est))
 hold off
 figure(2)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(1,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(1,:));
 hold off
 figure(3)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(2,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(2,:));
 hold off
 figure(4)
 hold on
-angle_diff = rad2deg(angdiff(euler_gt, euler_est));
-plot(angle_diff(3,:));
+diff = rad2deg(angle_diff(euler_gt, euler_est));
+plot(diff(3,:));
 hold off
 figure(5)
 hold on
-angle_diff = rad2deg(angdiff(angle_est, angle_gt));
-plot(angle_diff);
+diff = rad2deg(angle_diff(angle_est, angle_gt));
+plot(diff);
 hold off
 figure(6)
 hold on
-[up, lo] = envelope(angle_diff, 30, 'peak');
+[up, lo] = envelope(diff, 30, 'peak');
 envel = [up; lo]';
 plot(envel, 'g');
 hold off
