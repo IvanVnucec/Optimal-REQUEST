@@ -2,7 +2,7 @@
 %
 % Generate artificial measurements for Optimal-REQUEST algorithm testing.
 %
-% Author: Josip Loncar, 
+% Author: Josip Loncar, Ivan Vnucec
 % FER, Zagreb, Croatia
 % Date: 2021
 
@@ -47,8 +47,8 @@ end
 
 % === white Gauss zero mean noise ===
 gyr_bdy_meas_noise_std = 0.01;       % rad/s
-acc_bdy_meas_noise_std = 0.01;       % m/s^2
-mag_bdy_meas_noise_std = 10.0;      % uT
+acc_bdy_meas_noise_std = 0.1;       % m/s^2
+mag_bdy_meas_noise_std = 100.0;      % uT
 
 % === compute Mu and Eta noise variances for Q and R computation ===
 % for R computation

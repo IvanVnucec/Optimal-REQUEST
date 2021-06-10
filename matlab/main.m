@@ -56,10 +56,6 @@ for k = 2 : num_of_iter
     Rho_est(k) = Rho;
     P_est(:,:,k) = P;
 end
-
-alg_err = angle_diff(euler_gt, euler_est).^2;
-alg_err = sum(alg_err);
-alg_err = alg_err .* Rho_est;
     
     
     
