@@ -3,35 +3,43 @@
 clear all;
 colordef black
 
-iter = 100;
-
-Mu_noise_var_factors = 0.05 + (0.3-0.05) * rand(1, iter); 
-rms_errors = zeros(3, iter);
+generate_measurements
+Mu_noise_var_const = Mu_noise_var;
 
 hold on
-for j = 1:10
-    generate_measurements
-    Mu_noise_var_const = Mu_noise_var;
-for steps = 1 : iter
-    Mu_noise_var = Mu_noise_var_const * Mu_noise_var_factors(steps);
-   
-    main
 
-    e = angle_diff(euler_est, euler_gt).^2;
-    ms_e = mean(e, 2);
-    rms_errors(:,steps) = sqrt(ms_e);
-end
+Mu_noise_var_fact = 1;
+Mu_noise_var = Mu_noise_var_const * Mu_noise_var_fact;
+main
+e = angle_diff(euler_est, euler_gt).^2;
+% calculate rms of errors in every iteration of optimal req
+rms_err_by_iter = sqrt(mean(e.^2));
+disp_name = sprintf('Fact = %f', Mu_noise_var_fact);
+plot(rms_err_by_iter', 'DisplayName', disp_name)
 
-errors = sqrt(sum(rms_errors.^2));
-[min_error, index] = min(errors);
-fprintf('factor = %f -> rms_error = [%f %f %f] rad\n', ...
-    Mu_noise_var_factors(index), rms_errors(:,index));
+Mu_noise_var_fact = 0.1;
+Mu_noise_var = Mu_noise_var_const * Mu_noise_var_fact;
+main
+e = angle_diff(euler_est, euler_gt).^2;
+% calculate rms of errors in every iteration of optimal req
+rms_err_by_iter = sqrt(mean(e.^2));
+disp_name = sprintf('Fact = %f', Mu_noise_var_fact);
+plot(rms_err_by_iter', 'DisplayName', disp_name)
 
-scatter(Mu_noise_var_factors, errors)
-end
+Mu_noise_var_fact = 0.01;
+Mu_noise_var = Mu_noise_var_const * Mu_noise_var_fact;
+main
+e = angle_diff(euler_est, euler_gt).^2;
+% calculate rms of errors in every iteration of optimal req
+rms_err_by_iter = sqrt(mean(e.^2));
+disp_name = sprintf('Fact = %f', Mu_noise_var_fact);
+plot(rms_err_by_iter', 'DisplayName', disp_name)
+
 hold off
-xlabel('variance factor');
-ylabel('angle RMS error');
+
+legend;
+xlabel('k');
+ylabel('RMS error of all 3 angles');
 
 
 
