@@ -56,20 +56,3 @@ for k = 2 : num_of_iter
     Rho_est(k) = Rho;
     P_est(:,:,k) = P;
 end
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
