@@ -15,8 +15,8 @@ omega = 1;             % Angular velocity around rotation vector in rad/s
 
 % === Sensors white Gauss zero mean noise ===
 gyr_bdy_meas_noise_std = 0.01;       % rad/s
-acc_bdy_meas_noise_std = 0.1;       % m/s^2
-mag_bdy_meas_noise_std = 100.0;      % uT
+acc_bdy_meas_noise_std = 0.1;        % m/s^2
+mag_bdy_meas_noise_std = 1.0;        % uT
 
 t = 0:dT:simulation_time;
 num_of_iter = length(t);
