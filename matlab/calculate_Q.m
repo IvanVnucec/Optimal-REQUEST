@@ -7,8 +7,10 @@ function [Q] = calculate_Q(B, z, Sigma, var, dT)
 %   Ref. C eq. B.2.1.4a - B.2.1.4d, (for references list see main.m file under reference 
 %   comment section).
 %
-% Author: Ivan Vnucec, FER, Zagreb, 2021
-% License: MIT
+% Author:     Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 M = B * (B - Sigma * eye(3));
 yx = M' - M;

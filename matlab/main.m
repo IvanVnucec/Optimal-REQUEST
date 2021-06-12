@@ -4,8 +4,10 @@
 %        rng('default'); line because rng function is not yet 
 %        implemented.
 %
-% Author:  Ivan Vnucec, FER, Zagreb, 2021
-% License: MIT
+% Author:     Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 % =========================== START =============================
 

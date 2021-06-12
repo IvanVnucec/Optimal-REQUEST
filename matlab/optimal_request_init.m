@@ -8,8 +8,10 @@ function [K, P, mk] = optimal_request_init(r0, b0, Mu_noise_var)
 %   D. Choukroun,I. Y. Bar-Itzhack, and Y. Oshman,
 %   https://sci-hub.se/10.2514/1.10337
 %
-% Author: Ivan Vnucec, FER, Zagreb, 2021
-% License: MIT
+% Author:     Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 [~, ncols] = size(b0); 
 a0 = ones(1, ncols) ./ ncols; % equal weights

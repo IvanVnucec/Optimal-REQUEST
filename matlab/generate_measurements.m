@@ -2,9 +2,10 @@
 %
 % Generate artificial measurements for Optimal-REQUEST algorithm testing.
 %
-% Author: Josip Loncar, Ivan Vnucec
-% University: FER, Zagreb, Croatia
-% Date: 2021
+% Author:     Josip Loncar, Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 
 simulation_time  = 2000;  % Simulation time in seconds

@@ -33,8 +33,10 @@
 %   http://malcolmdshuster.com/FC_Markley_1988_J_SVD_JAS_MDSscan.pdf
 %
 % =========================== Licence ============================
-% Author: Ivan Vnucec, FER, Zagreb, 2021
-% License: MIT
+% Author:     Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
     Mu_noise_var, Eta_noise_var, dT)
