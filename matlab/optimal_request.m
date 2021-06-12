@@ -1,9 +1,5 @@
-function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
-    Mu_noise_var, Eta_noise_var, dT)
 
-% Function which calculates one step of Optimal-REQUEST algorithm.
-%
-% =========================== notes =============================
+% =========================== Notes =============================
 % Almost all of the algorithm equations have references to some
 % paper. The reference equations are written in the form for ex.
 % Ref A eq. 25 where letter 'A' denotes reference to the paper
@@ -14,7 +10,7 @@ function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
 % k are written with _k. For example dm_k+1 is written as dm and
 % dm_k is written as dmk.
 %
-% ========================= references ==========================
+% ========================= References ==========================
 % Ref A: 
 %   REQUEST: A Recursive QUEST Algorithmfor Sequential Attitude Determination
 %   Itzhack Y. Bar-Itzhack, 
@@ -28,16 +24,23 @@ function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
 % Ref. C: 
 %   Appendix B, Novel Methods for Attitude Determination Using Vector Observations,
 %   Daniel Choukroun,
+%   Page 233
 %   https://www.researchgate.net/profile/Daniel-Choukroun/publication/265455600_Novel_Methods_for_Attitude_Determination_Using_Vector_Observations/links/5509c02b0cf26198a639a83c/Novel-Methods-for-Attitude-Determination-Using-Vector-Observations.pdf#page=253
 %
 % Ref. D: 
-%   Appendixes, ttitude Determination Using Vector Observations andthe Singular Value Decomposition
+%   Appendixes, Attitude Determination Using Vector Observations and
+%   the Singular Value Decomposition
 %   Markley, F. L.,
 %   http://malcolmdshuster.com/FC_Markley_1988_J_SVD_JAS_MDSscan.pdf
 %
-% 
-% Author: Ivan Vnucec, 2021
+% =========================== Licence ============================
+% Author: Ivan Vnucec, FER, Zagreb, 2021
 % License: MIT
+
+function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
+    Mu_noise_var, Eta_noise_var, dT)
+
+% Calculate one step of Optimal-REQUEST algorithm.
 
 % =================== time update ===================
 % Ref. B eq. 4

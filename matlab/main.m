@@ -1,10 +1,10 @@
-% =========================== info ==============================
-% Script for testing the Optimal-REQUEST algorithm.
-% Works in MATLAB or GNU Octave. For GNU Octave delete the
-% rng('default'); line because rng function is not yet 
-% implemented.
+% =========================== Info ==============================
+% About: Script for testing the Optimal-REQUEST algorithm.
+%        Works in MATLAB or GNU Octave. For GNU Octave delete the
+%        rng('default'); line because rng function is not yet 
+%        implemented.
 %
-% Author: Ivan Vnucec, 2021
+% Author:  Ivan Vnucec, FER, Zagreb, 2021
 % License: MIT
 
 % =========================== START =============================

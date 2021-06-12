@@ -1,3 +1,8 @@
+% =========================== Info ==============================
+% About: File used to test Optimal-REQUEST algorithm
+% 
+% Author: Ivan Vnucec, FER, Zagreb, 2021
+% License: MIT
 
 % for debug
 clear all;

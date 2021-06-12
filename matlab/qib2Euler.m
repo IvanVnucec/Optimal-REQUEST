@@ -1,9 +1,17 @@
-function [euler] = qib2Euler(qib)
+% =========================== Info ==============================
+% About: Convert the quaternion into Euler angles.
+%        Quaternion is defined as q = q(1) + q(2) * i + q(3) * j + q(4) * k
+%
+% Author: Josip Loncar, FER, Zagreb, 2021
 
-psi = atan2(2*(qib(2)*qib(3)+qib(1)*qib(4)), qib(1)^2+qib(2)^2-qib(3)^2-qib(4)^2);
-theta = asin(-2*(qib(2)*qib(4)-qib(1)*qib(3)));
-phi = atan2(2*(qib(3)*qib(4)+qib(1)*qib(2)), qib(1)^2-qib(2)^2-qib(3)^2+qib(4)^2);
+function [euler] = qib2Euler(q)
+    psi = atan2(2 * (q(2) * q(3) + q(1) * q(4)), ...
+        q(1)^2 + q(2)^2 - q(3)^2 - q(4)^2);
+    
+    theta = asin(2 * (q(1) * q(3) - q(2) * q(4)));
+    
+    phi = atan2(2 * (q(3) * q(4) + q(1) * q(2)), ...
+        q(1)^2 - q(2)^2 - q(3)^2 + q(4)^2);
 
-euler = [psi, theta, phi]';
+    euler = [psi, theta, phi]';
 end
-
