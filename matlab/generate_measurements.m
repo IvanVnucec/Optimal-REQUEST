@@ -3,7 +3,7 @@
 % Generate artificial measurements for Optimal-REQUEST algorithm testing.
 %
 % Author: Josip Loncar, Ivan Vnucec
-% FER, Zagreb, Croatia
+% University: FER, Zagreb, Croatia
 % Date: 2021
 
 
@@ -11,6 +11,11 @@ simulation_time  = 2000;  % Simulation time in seconds
 dT = 10;               % Sampling time in seconds
 n  = [0, 0, 1]';        % Rotation vector (unnormalized)
 omega = 1;             % Angular velocity around rotation vector in rad/s
+
+% === Sensors white Gauss zero mean noise ===
+gyr_bdy_meas_noise_std = 0.01;       % rad/s
+acc_bdy_meas_noise_std = 0.1;       % m/s^2
+mag_bdy_meas_noise_std = 100.0;      % uT
 
 t = 0:dT:simulation_time;
 num_of_iter = length(t);
@@ -45,11 +50,6 @@ for i = 1:num_of_iter
     euler_gt(:,i) = qib2Euler(qib_gt(:,i));
 end
 
-% === white Gauss zero mean noise ===
-gyr_bdy_meas_noise_std = 0.01;       % rad/s
-acc_bdy_meas_noise_std = 0.1;       % m/s^2
-mag_bdy_meas_noise_std = 100.0;      % uT
-
 % === compute Mu and Eta noise variances for Q and R computation ===
 % for R computation
 mean_acc_bdy_len = mean(vecnorm(acc_bdy_meas_true));     % m/s^2
@@ -63,9 +63,9 @@ Mu_noise_var = norm_acc_bdy_std^2 + norm_mag_bdy_std^2;
 Eta_noise_var = gyr_bdy_meas_noise_std^2;
 
 % === add gaussian noise to body measurements ===
-gyr_bdy_meas = gyr_bdy_meas_true + randn(size(gyr_bdy_meas_true)) * gyr_bdy_meas_noise_std;
 acc_bdy_meas = acc_bdy_meas_true + randn(size(acc_bdy_meas_true)) * acc_bdy_meas_noise_std;
 mag_bdy_meas = mag_bdy_meas_true + randn(size(mag_bdy_meas_true)) * mag_bdy_meas_noise_std;
+gyr_bdy_meas = gyr_bdy_meas_true + randn(size(gyr_bdy_meas_true)) * gyr_bdy_meas_noise_std;
 
 % === normalize measurement vectors ===
 % reference
@@ -77,13 +77,3 @@ mag_bdy_meas = mag_bdy_meas ./ vecnorm(mag_bdy_meas);
 
 acc_bdy_meas_true = acc_bdy_meas_true ./ vecnorm(acc_bdy_meas_true);
 mag_bdy_meas_true = mag_bdy_meas_true ./ vecnorm(mag_bdy_meas_true);
-
-
-
-
-
-
-
-
-
-
