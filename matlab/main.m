@@ -20,19 +20,11 @@ P_est = zeros(4, 4, num_of_iter);
 % ==================== initialization k=0 =======================
 k = 1; % k=1 because of MATLAB counting from 1 and not from 0
 
-% prepare first measurement and weights
+% prepare first measurement
 r0 = [mag_ref_meas(:,k), acc_ref_meas(:,k)];
 b0 = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
-[~, ncols] = size(b0); 
-a0 = ones(1, ncols) ./ ncols; % equal weights
 
-dm0 = sum(a0); % Ref. A eq. 11a
-dK0 = calculate_dK(r0, b0, a0);
-R0 = calculate_R(r0, b0, Mu_noise_var);
-
-K = dK0;    % Ref. B eq. 65
-P = R0;     % Ref. B eq. 66
-mk = dm0;   % Ref. B eq. 67, mk = m_k
+[K, P, mk] = optimal_request_init(r0, b0, Mu_noise_var);
 
 % ======================== algorithm ============================
 for k = 2 : num_of_iter
