@@ -1,4 +1,3 @@
-
 % =========================== Notes =============================
 % Almost all of the algorithm equations have references to some
 % paper. The reference equations are written in the form for ex.
