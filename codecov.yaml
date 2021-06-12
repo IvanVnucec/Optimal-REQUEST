@@ -6,6 +6,7 @@ ignore:
   - "**/test/**/*"
   - "**/test_*.c"
   - "**/minunit.h"
+  - "**/matlab/**/*"
 
 codecov:
   require_ci_to_pass: yes

@@ -6,6 +6,11 @@ function [dK] = calculate_dK(r, b, a)
 %
 %   Ref. A eq. 11b - 11f, (for references list see main.m file under reference 
 %   comment section).
+%
+% Author:     Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 [~, ncols] = size(r);
 

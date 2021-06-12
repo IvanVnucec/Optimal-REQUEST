@@ -1,199 +1,99 @@
-% =========================== info ==============================
-% Script for testing the Optimal-REQUEST algorithm.
-% Works in MATLAB or GNU Octave.
+% =========================== Info ==============================
+% About: Script for testing the Optimal-REQUEST algorithm.
 %
-% Author: Ivan Vnucec, 2021
-% License: MIT
-
-% =========================== notes =============================
-% Almost all of the algorithm equations have references to some
-% paper. The reference equations are written in the form for ex.
-% Ref A eq. 25 where letter 'A' denotes reference to the paper
-% and the number '25' the equation number it that paper. The 
-% references are listed under Reference section below.
-% 
-% Indexes with k+1 are written without indexes and indexes with 
-% k are written with _k. For example dm_k+1 is written as dm and
-% dm_k is written as dmk.
-
-% ========================= references ==========================
-% Ref A: 
-%   REQUEST: A Recursive QUEST Algorithmfor Sequential Attitude Determination
-%   Itzhack Y. Bar-Itzhack, 
-%   https://sci-hub.se/https://doi.org/10.2514/3.21742
-%
-% Ref B: 
-%   Optimal-REQUEST Algorithm for Attitude Determination,
-%   D. Choukroun,I. Y. Bar-Itzhack, and Y. Oshman,
-%   https://sci-hub.se/10.2514/1.10337
-%
-% Ref. C: 
-%   Appendix B, Novel Methods for Attitude Determination Using Vector Observations,
-%   Daniel Choukroun,
-%   https://www.researchgate.net/profile/Daniel-Choukroun/publication/265455600_Novel_Methods_for_Attitude_Determination_Using_Vector_Observations/links/5509c02b0cf26198a639a83c/Novel-Methods-for-Attitude-Determination-Using-Vector-Observations.pdf#page=253
-%
-% Ref. D: 
-%   Appendixes, ttitude Determination Using Vector Observations andthe Singular Value Decomposition
-%   Markley, F. L.,
-%   http://malcolmdshuster.com/FC_Markley_1988_J_SVD_JAS_MDSscan.pdf
+% Author:     Ivan Vnucec
+% University: FER, Zagreb
+% Date:       May, 2021
+% License:    MIT
 
 % =========================== START =============================
 % for debug
 clear all;
-close all;
 rng('default');
+colordef black;
 
-% =========================== constants =========================
-dT = 0.1;               % senzor refresh time, in seconds
-simulation_time = 500;  % in seconds
-
-num_of_iter = simulation_time / dT;
-t = linspace(0, simulation_time, num_of_iter);
-
-% ======================== measurements =========================
-% === white Gauss zero mean noise ===
-gyr_bdy_meas_noise_std = 0.1;       % rad/s
-acc_bdy_meas_noise_std = 0.15;      % m/s
-mag_bdy_meas_noise_std = 100.15;    % nT
-
-% TODO: See how we can calculate Mu meas nose (see eq. 36)
-Mu_noise_std = acc_bdy_meas_noise_std + mag_bdy_meas_noise_std; % for R computation
-Eta_noise_std = gyr_bdy_meas_noise_std;                         % for Q computation
-
-% === w/o noise ===
-% reference
-acc_ref_meas = zeros(3, num_of_iter) + [0 0 -9.81]';            % m/s
-mag_ref_meas = zeros(3, num_of_iter) + [22165.4 1743 42786.9]'; % nT
-
-% rotate reference vectors to create body vectors
-% rotate about vector 'n' by an 'angle' in radians
-n = [1 1 1]';
-angle = 2*pi/3;
-
-% body
-gyr_bdy_meas = zeros(3, num_of_iter);               % rad/s
-acc_bdy_meas = rodrigues(acc_ref_meas, n, angle);   % rotated % m/s
-mag_bdy_meas = rodrigues(mag_ref_meas, n, angle);   % rotated % nT
-
-% == add gaussian noise to body measurements ===
-gyr_bdy_meas = gyr_bdy_meas + randn(size(gyr_bdy_meas)) * gyr_bdy_meas_noise_std;
-acc_bdy_meas = acc_bdy_meas + randn(size(acc_bdy_meas)) * acc_bdy_meas_noise_std;
-mag_bdy_meas = mag_bdy_meas + randn(size(mag_bdy_meas)) * mag_bdy_meas_noise_std;
-
-% === normalize measurement vectors ===
-% reference
-acc_ref_meas = acc_ref_meas ./ vecnorm(acc_ref_meas);
-mag_ref_meas = mag_ref_meas ./ vecnorm(mag_ref_meas);
-% body
-acc_bdy_meas = acc_bdy_meas ./ vecnorm(acc_bdy_meas);
-mag_bdy_meas = mag_bdy_meas ./ vecnorm(mag_bdy_meas);
+% generate all the data we need in main.m file
+generate_measurements
 
 % ======================== algorithm output =====================
-K_out = zeros(4, 4, num_of_iter);
-q_out = zeros(4, 1, num_of_iter);
-angle_out = zeros(1, num_of_iter);
-Rho_out = zeros(1, num_of_iter);
+K_est = zeros(4, 4, num_of_iter);
+q_est = zeros(4, num_of_iter);
+euler_est = zeros(3, num_of_iter);
+angle_est = zeros(1, num_of_iter);
+Rho_est = zeros(1, num_of_iter);
+P_est = zeros(4, 4, num_of_iter);
 
 % ==================== initialization k=0 =======================
 k = 1; % k=1 because of MATLAB counting from 1 and not from 0
 
-% prepare first measurement and weights
+% prepare first measurement
 r0 = [mag_ref_meas(:,k), acc_ref_meas(:,k)];
 b0 = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
-[~, ncols] = size(b0); 
-a0 = ones(1, ncols) ./ ncols; % equal weights
 
-dm0 = sum(a0); % Ref. A eq. 11a
-dK0 = calculate_dK(r0, b0, a0);
-R0 = calculate_R(r0, b0, Mu_noise_std^2);
-
-K = dK0;    % Ref. B eq. 65
-P = R0;     % Ref. B eq. 66
-mk = dm0;   % Ref. B eq. 67, mk = m_k
+[K, P, mk] = optimal_request_init(r0, b0, Mu_noise_var);
 
 % ======================== algorithm ============================
 for k = 2 : num_of_iter
-    % =================== time update ===================
     % get angular velocity measurement
     w = gyr_bdy_meas(:,k);
     
-    % Ref. B eq. 4
-    wx = [0, -w(3), w(2); w(3), 0, -w(1); -w(2), w(1), 0];
-    
-    % Ref. B eq. 10
-    Omega = 1.0 / 2 * [-wx, w; -w', 0];
-    
-    % Ref. B eq. 9
-    Phi = expm(Omega * dT); % eq. 9
-    
-    [B, ~, z, Sigma] = get_util_matrices(K);
-    Q = calculate_Q(B, z, Sigma, Eta_noise_std^2, dT);
-    
-    % Ref. B eq. 11
-    K = Phi * K * Phi';
-    
-    % Ref. B eq. 69
-    P = Phi * P * Phi' + Q;
-    
-    % ================ measurement update ===============
     % referent vector measurements
     r = [mag_ref_meas(:,k), acc_ref_meas(:,k)];
     % body vector measurements
     b = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
-    % calc. meas. weights
-    [~, ncols] = size(b); 
-    a = ones(1, ncols) ./ ncols; % equal weights 
     
-    dm = sum(a);
-    
-    R = calculate_R(r, b, Mu_noise_std^2);
-    
-    % Ref. B eq. 70
-    Rho = (mk^2 * trace(P)) / (mk^2 * trace(P) + dm^2 * trace(R));
-    
-    % Ref. B eq. 71
-    m = (1.0 - Rho) * mk + Rho * dm;
-    
-    dK = calculate_dK(r, b, a);
-    
-    % Ref. B eq. 72
-    K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
-    
-    % Ref. B eq. 73
-    P = ((1.0 - Rho) * mk / m)^2 * P + (Rho * dm / m)^2 * R;
-    
-    % for the next iteration m_k = m_k+1
-    mk = m;
+    [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
+        Mu_noise_var, Eta_noise_var, dT);
     
     % store calculated K and q for debug
-    K_out(:,:,k) = K;
+    K_est(:,:,k) = K;
     q = get_quat_from_K(K);
-    q_out(:,:,k) = q;
-    angle_out(:,k) = 2.0 * acos(abs(q(1)));
-    Rho_out(k) = Rho;
+    q_est(:,k) = q;
+    angle_est(:,k) = 2.0 * acos(abs(q(1)));
+    euler_est(:,k) = qib2Euler(q);
+    Rho_est(k) = Rho;
+    P_est(:,:,k) = P;
 end
 
+% ======================== plotting ============================
 % plot angle difference between real and estimated angle
-figure;
-plot(t, rad2deg(angle - angle_out)); 
-title('Real vs Estimated angle difference vs Time');
+figure(1);
+plot(t, angle_diff(euler_est, euler_gt)); 
+title('Real vs Estimated Euler angles differences vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
 grid on;
 
 % plot the optimal filter gain
-figure; 
-semilogy(t, Rho_out); 
+figure(2); 
+semilogy(t, Rho_est); 
 title('Rho vs Time'); 
 xlabel('time [s]'); 
 ylabel('Rho');
 grid on;
 
 
+% ======================= Private functions =========================
 
+function [q] = get_quat_from_K(K)
+%GET_QUAT_FROM_K Function returns the eigenvector of matrice 'K' with the 
+%   largest eigenvalue. 
+%   The returned vector is quaternion rotation.
+%
+%   Ref. B states:
+%   The optimal quaternionË†qk+1/k+1is the eigenvector ofKk+1/k+1,which belongs to its maximal eigenvalue.
 
+% get eigenvector
+[V, D] = eig(K);
 
+% sort eigenvectors by eigenvalues
+[~, ind] = sort(diag(D));
+Vs = V(:,ind);
 
+% pick the one with the largest eigenvalue which is at the end
+q = Vs(:,end);
 
+% Ref. B eq. 3 (text under), we are using different quaternion representation
+q = [q(4); q(1:3)];
 
-
+end
