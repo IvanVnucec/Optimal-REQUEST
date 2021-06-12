@@ -91,6 +91,8 @@ mk = m;
 end
 
 
+% ======================= Private functions =========================
+
 function [B, S, z, Sigma] = get_util_matrices(K)
 %GET_UTIL_MATRICES Returns submatrices 'B', 'S', 'z' and 'Sigma' of 'K' 
 %   matrice.

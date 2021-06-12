@@ -1,8 +1,5 @@
 % =========================== Info ==============================
 % About: Script for testing the Optimal-REQUEST algorithm.
-%        Works in MATLAB or GNU Octave. For GNU Octave delete the
-%        rng('default'); line because rng function is not yet 
-%        implemented.
 %
 % Author:     Ivan Vnucec
 % University: FER, Zagreb
@@ -10,6 +7,13 @@
 % License:    MIT
 
 % =========================== START =============================
+% for debug
+clear all;
+rng('default');
+colordef black;
+
+% generate all the data we need in main.m file
+generate_measurements
 
 % ======================== algorithm output =====================
 K_est = zeros(4, 4, num_of_iter);
@@ -51,6 +55,25 @@ for k = 2 : num_of_iter
     P_est(:,:,k) = P;
 end
 
+% ======================== plotting ============================
+% plot angle difference between real and estimated angle
+figure(1);
+plot(t, angle_diff(euler_est, euler_gt)); 
+title('Real vs Estimated Euler angles differences vs Time');
+xlabel('time [s]'); 
+ylabel('angle [deg]');
+grid on;
+
+% plot the optimal filter gain
+figure(2); 
+semilogy(t, Rho_est); 
+title('Rho vs Time'); 
+xlabel('time [s]'); 
+ylabel('Rho');
+grid on;
+
+
+% ======================= Private functions =========================
 
 function [q] = get_quat_from_K(K)
 %GET_QUAT_FROM_K Function returns the eigenvector of matrice 'K' with the 
