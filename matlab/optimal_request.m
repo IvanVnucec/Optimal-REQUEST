@@ -1,4 +1,6 @@
 % =========================== Notes =============================
+% Calculate one step of Optimal-REQUEST algorithm.
+% 
 % Almost all of the algorithm equations have references to some
 % paper. The reference equations are written in the form for ex.
 % Ref A eq. 25 where letter 'A' denotes reference to the paper

@@ -1,6 +1,9 @@
-%% Generates accelerometer, magnetometer and gyro measurements
-%
-% Generate artificial measurements for Optimal-REQUEST algorithm testing.
+% About: Generate artificial measurements for Optimal-REQUEST algorithm 
+%        testing. The scripts generates accelerometer, magnetometer and 
+%        gyroscope true measurement vectors by rotating known reference 
+%        vectors around some user-defined vector with user-defined angular 
+%        velocity. In the end, we are adding gaussian noise to those 
+%        vectors.
 %
 % Author:     Josip Loncar, Ivan Vnucec
 % University: FER, Zagreb

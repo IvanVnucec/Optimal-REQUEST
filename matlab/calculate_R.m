@@ -1,5 +1,6 @@
 function [R] = calculate_R(r, b, var)
-%CALCULATE_R Compute matrice 'R'.
+%CALCULATE_R Function computes the R matrix used in Optimal-REQUEST 
+%            algorithm.
 %   Compute matrice 'R' with reference matrice 'r', body measurements
 %   matrice 'b' and measurement variance 'var'.
 %

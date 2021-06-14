@@ -1,5 +1,6 @@
 function [dK] = calculate_dK(r, b, a)
-%CALCULATE_DK Calculate 'dK'.
+%CALCULATE_DK Function computes the incremental dK matrix used in 
+%             Optimal-REQUEST algorithm.
 %   Calculate 'dK' incremental matrice with reference matrice 'r', body 
 %   matrice 'b' and weights assigned to each column vector in body matrice 
 %   'a'.

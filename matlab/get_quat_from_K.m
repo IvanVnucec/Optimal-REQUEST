@@ -1,5 +1,5 @@
 function [q] = get_quat_from_K(K)
-%GET_QUAT_FROM_K Function returns the eigenvector of matrice 'K' with the 
+%GET_QUAT_FROM_K Function returns the eigenvector of the matrix 'K' with the 
 %   largest eigenvalue. 
 %   The returned vector is quaternion rotation.
 %

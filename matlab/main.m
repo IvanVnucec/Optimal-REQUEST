@@ -1,5 +1,8 @@
 % =========================== Info ==============================
-% About: Script for testing the Optimal-REQUEST algorithm.
+% About: Script for testing the Optimal-REQUEST algorithm. It generates 
+%        artificial measurements, runs Optimal-REQUEST algorithm and plots 
+%        the differences between true and estimated angles.
+
 %
 % Author:     Ivan Vnucec
 % University: FER, Zagreb

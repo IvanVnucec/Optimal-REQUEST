@@ -1,5 +1,6 @@
 function [Q] = calculate_Q(B, z, Sigma, var, dT)
-%CALCULATE_Q Compute matrice 'Q'.
+%CALCULATE_Q Function computes the Q matrix used in Optimal-REQUEST 
+%            algorithm.
 %   Compute matrice 'Q' with submatrices 'B', 'z', 'Sigma', noise variance 
 %   variance 'var' and time difference 'dT'. 'B', 'z' and 'Sigma' 
 %   submatrices can be calculated via the 'get_util_matrices' function.

@@ -1,5 +1,5 @@
 % =========================== Info ==============================
-% About: Convert the quaternion into a Rotational matrice.
+% About: Convert the quaternion into a Rotational matrix.
 %        Quaternion is defined as q = q(1) + q(2) * i + q(3) * j + q(4) * k
 % 
 % Author:     Josip Loncar
