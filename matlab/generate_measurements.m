@@ -22,6 +22,11 @@ acc_bdy_meas_noise_std = [0.01195    0.01202    0.01290]';        % m/s^2
 mag_bdy_meas_noise_std = [0.77086    0.76900    0.76907]';        % uT
 gyr_bdy_meas_noise_std = [0.00049    0.00052    0.00068]';        % rad/s
 
+% === Gyroscope bias rate of change ===
+% this value was not measured
+% this value must be constant
+gyr_bdy_meas_bias_rate = [0.0001    0.0001    0.0001]';           % rad/s/s
+
 t = 0:dT:simulation_time;
 num_of_iter = length(t);
 
@@ -32,7 +37,7 @@ n_norm = n ./ vecnorm(n);
 % we got this values by measuring our IMU sensor and looking into IGRF model (google it)
 acc_ref_meas = zeros(3, num_of_iter) + [-0.48133   -0.46010   -9.25942]';   % m/s^2
 mag_ref_meas = zeros(3, num_of_iter) + [39.96922   24.34472    3.66588]';   % uT
-gyr_ref_meas = zeros(3, num_of_iter) + n_velocity * n_norm;                      % rad/s
+gyr_ref_meas = zeros(3, num_of_iter) + n_velocity * n_norm;                 % rad/s
 % Body
 acc_bdy_meas_true = zeros(3, num_of_iter);
 mag_bdy_meas_true = zeros(3, num_of_iter);
@@ -45,6 +50,10 @@ euler_gt = zeros(3, num_of_iter);
 % This is valid because ang. vel. is constant
 alpha = n_velocity * t;
 angle_gt = zeros(1, num_of_iter);
+
+% calculate the gyro bias for every iteration
+% we can do this because bias rate is constant
+gyr_bdy_meas_bias = t .* gyr_bdy_meas_bias_rate;
 
 % rotate the reference measurements to create true body measurements
 for i = 1:num_of_iter
@@ -73,6 +82,9 @@ Eta_noise_var = sum(gyr_bdy_meas_noise_std.^2);
 acc_bdy_meas = acc_bdy_meas_true + randn(size(acc_bdy_meas_true)) .* acc_bdy_meas_noise_std;
 mag_bdy_meas = mag_bdy_meas_true + randn(size(mag_bdy_meas_true)) .* mag_bdy_meas_noise_std;
 gyr_bdy_meas = gyr_bdy_meas_true + randn(size(gyr_bdy_meas_true)) .* gyr_bdy_meas_noise_std;
+
+% === add gyro bias ===
+gyr_bdy_meas = gyr_bdy_meas + gyr_bdy_meas_bias;
 
 % === normalize acc and mag measurement vectors ===
 % reference
