@@ -13,7 +13,7 @@ function [retval] = expm_44ss(S, w, dT)
 % by Diego Gerardo Andre ́e Avalos G ́alvez , 2018
 %
 % Also, the mathematic identities written below are devised by using the
-% script in the other/get_expm_skew_sym.m. User is advised to look into it.
+% script in the misc/get_expm_skew_sym.m. User is advised to look into it.
 %
 % Author:     Ivan Vnucec
 % University: FER, Zagreb
