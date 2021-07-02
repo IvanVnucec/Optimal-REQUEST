@@ -8,7 +8,7 @@
 % The methods in this script are devised from the: 
 % EXPONENTIALS OF REAL SKEW-SYMMETRIC MATRICES  IN TERMS OF THEIR EIGENVALUES 
 % see the heading Case 4.4.1
-% by Diego Gerardo Andre ́e Avalos G ́alvez , 2018
+% by Diego Gerardo Andree Avalos Galvez , 2018
 % 
 % For complete understanding user is advise to look into optimal_request.m
 % file.
