@@ -25,7 +25,7 @@ gyr_bdy_meas_noise_std = [0.00049    0.00052    0.00068]';        % rad/s
 % === Gyroscope bias rate of change ===
 % this value was not measured
 % this value must be constant
-gyr_bdy_meas_bias_rate = [0.0001    0.0001    0.0001]';           % rad/s/s
+gyr_bdy_meas_bias_rate = 10^-60 * [1  1  1]';           % rad/s/s
 
 t = 0:dT:simulation_time;
 num_of_iter = length(t);
