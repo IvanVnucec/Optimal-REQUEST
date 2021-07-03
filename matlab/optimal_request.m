@@ -46,16 +46,9 @@ function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
 % Calculate one step of Optimal-REQUEST algorithm.
 
 % =================== time update ===================
-% Ref. B eq. 4
-wx = [0, -w(3), w(2); w(3), 0, -w(1); -w(2), w(1), 0];
 
-% Ref. B eq. 10
-Omega = 1.0 / 2 * [-wx, w; -w', 0];
+Phi = calculate_Phi(w, dT); 
 
-S = Omega * dT;
-
-% Ref. B eq. 9
-Phi = expm_44ss(S, w, dT); % eq. 9 with slight modifications, see expm_44ss
 [B, ~, z, Sigma] = get_util_matrices(K);
 Q = calculate_Q(B, z, Sigma, Eta_noise_var, dT);
 
