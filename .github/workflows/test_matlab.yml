@@ -24,7 +24,53 @@ jobs:
       - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
 
       - name: Install GNU Octave
+        id: octave_install
         run: sudo ./scripts/install_gnu_octave.sh
 
-      - name: Run tests
+      # Run tests 10 times because we have randomly generated measurements
+      - name: Run tests1
         run: ./scripts/test_matlab.sh
+
+      - name: Run tests2
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests3
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests4
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests5
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests6
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests7
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+      
+      - name: Run tests8
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests9
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      - name: Run tests10
+        if: ${{ success() }}
+        run: ./scripts/test_matlab.sh
+
+      # Upload a Matlab plot of the failed step
+      - name: Upload Matlab plot
+        if: ${{ failure() && steps.octave_install.outcome == 'success' }}
+        uses: actions/upload-artifact@ee69f02b3dfdecd58bb31b4d133da38ba6fe3700
+        with:
+          name: plot
+          path: matlab/tests/*.jpg
