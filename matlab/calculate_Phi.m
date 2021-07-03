@@ -8,7 +8,7 @@ function [Phi] = calculate_Phi(w, dT)
 % a 4x4 skew-symetric matrix in optimal_request.m file there exist
 % simplification in paper below.
 % The mathematic identities written below are devised by using the
-% script in the other/get_expm_skew_sym.m. User is advised to look into it.
+% script in the misc/get_expm_skew_sym.m. User is advised to look into it.
 %
 % ========================= References ==========================
 % Ref B: 
@@ -18,8 +18,8 @@ function [Phi] = calculate_Phi(w, dT)
 %
 % Matrix exponential: 
 % EXPONENTIALS OF REAL SKEW-SYMMETRIC MATRICES  IN TERMS OF THEIR EIGENVALUES 
-% see the heading Case 4.4.1
-% by Diego Gerardo Andre ́e Avalos G ́alvez , 2018
+% by Diego Gerardo Andree Avalos Galvez , 2018
+% see heading Case 4.4.1
 %
 % =========================== Licence ============================
 % Author:     Ivan Vnucec
