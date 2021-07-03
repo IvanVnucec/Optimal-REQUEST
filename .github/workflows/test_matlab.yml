@@ -1,0 +1,30 @@
+name: Test Matlab
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  # Also trigger on page_build, as well as release created events
+  page_build:
+  release:
+    types: # This configuration does not affect the page_build event above
+      - created
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+
+      - name: Install GNU Octave
+        run: sudo ./scripts/install_gnu_octave.sh
+
+      - name: Run tests
+        run: ./scripts/test_matlab.sh

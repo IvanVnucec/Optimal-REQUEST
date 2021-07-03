@@ -1,6 +1,7 @@
 [![CI](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/IvanVnucec/Optimal-REQUEST/branch/master/graph/badge.svg?token=DIJ1KJMVTM)](https://codecov.io/gh/IvanVnucec/Optimal-REQUEST)
 [![docs](https://img.shields.io/docsrs/regex?color=blue)](https://ivanvnucec.github.io/Optimal-REQUEST/)
+[![Test Matlab](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/test_matlab.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/test_matlab.yml)
 
 ## About The Project
 * Least-squares estimation of the attitude quaternion using vector measurements,  
