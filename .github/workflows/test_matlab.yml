@@ -25,47 +25,47 @@ jobs:
 
       - name: Install GNU Octave
         id: octave_install
-        run: sudo ./scripts/install_gnu_octave.sh
+        run: sudo make install_gnu_octave
 
       # Run tests 10 times because we have randomly generated measurements
       - name: Run tests1
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests2
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests3
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests4
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests5
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests6
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests7
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
       
       - name: Run tests8
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests9
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       - name: Run tests10
         if: ${{ success() }}
-        run: ./scripts/test_matlab.sh
+        run: make matlab_test
 
       # Upload a Matlab plot of the failed step
       - name: Upload Matlab plot
