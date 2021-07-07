@@ -10,7 +10,7 @@
 % for debug
 clear all;
 
-addpath('../.')
+addpath('../src')
 
 std_rms_err_threshold = 1.5;    % Degrees, RMS error threshold for test pass or fail
 simulation_time  = 2000;        % Simulation time in seconds

@@ -1,8 +1,8 @@
 all:
 	@echo "help: \n\
-		matlab_run - Run Optimal-REQUEST algorithm in Matlab \n \
-		matlab_test - Run Optima-REQUEST tests in GNU Octave \n \
-		install_gnu_octave - Installs GNU Octave with apt-get. You might want to run make with sudo \n \
+		make matlab_run - Run Optimal-REQUEST algorithm in Matlab \n \
+		make matlab_test - Run Optima-REQUEST tests in GNU Octave \n \
+		make install_gnu_octave - Installs GNU Octave with apt-get. You might want to run make with sudo \n \
 	"
 
 .PHONY: matlab_run
