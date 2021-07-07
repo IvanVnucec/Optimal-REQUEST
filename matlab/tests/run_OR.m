@@ -19,7 +19,10 @@ colordef black
 addpath('./../scripts');
 
 % generate all the data we need in main.m file
-gen_meas
+simulation_time = 2000;     % simulation time in sec
+dT = 10;                    % sensor sampling period in sec
+measurements = gen_meas(simulation_time, dT);
+load(measurements); % TODO: Specify what variables we want to load
 
 % ======================== algorithm output =====================
 K_est = zeros(4, 4, num_of_iter);

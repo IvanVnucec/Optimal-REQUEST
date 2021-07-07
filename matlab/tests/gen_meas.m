@@ -1,9 +1,15 @@
+function [mat_filepath] = gen_meas(simulation_time, dT)
 % About: Generate artificial measurements for Optimal-REQUEST algorithm 
 %        testing. The scripts generates accelerometer, magnetometer and 
 %        gyroscope true measurement vectors by rotating known reference 
 %        vectors around some user-defined vector with user-defined angular 
 %        velocity. In the end, we are adding gaussian noise to those 
 %        vectors.
+%        Function also exports measurements in the 'measurements.mat' file.
+%
+% Variables:
+%   - simulation_time - Simulation time in seconds
+%   - dT - Sensors sampling time period in seconds
 %
 % Author:     Josip Loncar, Ivan Vnucec
 % University: FER, Zagreb
@@ -11,10 +17,8 @@
 % License:    MIT
 
 
-simulation_time  = 2000;    % Simulation time in seconds
-dT = 10;                    % Sampling time in seconds
-n  = [0 0 1]';              % Rotation vector (unnormalized)
-n_velocity = 1;                  % Angular velocity around rotation vector in rad/s
+n  = [0 0 1]';                  % Rotation vector (unnormalized)
+n_velocity = 1;                 % Angular velocity around rotation vector in rad/s
 
 % add utils to path
 addpath('./../scripts/utils');
@@ -99,3 +103,6 @@ mag_bdy_meas = mag_bdy_meas ./ vecnorm(mag_bdy_meas);
 
 acc_bdy_meas_true = acc_bdy_meas_true ./ vecnorm(acc_bdy_meas_true);
 mag_bdy_meas_true = mag_bdy_meas_true ./ vecnorm(mag_bdy_meas_true);
+
+mat_filepath = strcat(pwd, '/measurements.mat');
+save(mat_filepath);
