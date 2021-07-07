@@ -18,41 +18,44 @@ clear all;
 % add src, utils and gen_meas folders to path
 addpath('./../scripts', './../scripts/utils');
 
+% ====================== TEST PARAMETERS ========================
 std_rms_err_threshold = 1.5;    % Degrees, RMS error threshold for test pass or fail
 simulation_time  = 2000;        % Simulation time in seconds
 dT = 10;                        % Sensor sampling period in seconds
+
+% generate and load measurements
 measurements = gen_meas(simulation_time, dT);
-load(measurements); % TODO: Specify what variables we want to load
+meas = load(measurements);
 
 % ======================== algorithm output =====================
-K_est = zeros(4, 4, num_of_iter);
-q_est = zeros(4, num_of_iter);
-euler_est = zeros(3, num_of_iter);
-angle_est = zeros(1, num_of_iter);
-Rho_est = zeros(1, num_of_iter);
-P_est = zeros(4, 4, num_of_iter);
+K_est = zeros(4, 4, meas.num_of_iter);
+q_est = zeros(4, meas.num_of_iter);
+euler_est = zeros(3, meas.num_of_iter);
+angle_est = zeros(1, meas.num_of_iter);
+Rho_est = zeros(1, meas.num_of_iter);
+P_est = zeros(4, 4, meas.num_of_iter);
 
 % ==================== initialization k=0 =======================
 k = 1; % k=1 because of MATLAB counting from 1 and not from 0
 
 % prepare first measurement
-r0 = [mag_ref_meas(:,k), acc_ref_meas(:,k)];
-b0 = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
+r0 = [meas.mag_ref_meas(:,k), meas.acc_ref_meas(:,k)];
+b0 = [meas.mag_bdy_meas(:,k), meas.acc_bdy_meas(:,k)];
 
-[K, P, mk] = optimal_request_init(r0, b0, Mu_noise_var);
+[K, P, mk] = optimal_request_init(r0, b0, meas.Mu_noise_var);
 
 % ======================== algorithm ============================
-for k = 2 : num_of_iter
+for k = 2 : meas.num_of_iter
     % get angular velocity measurement
-    w = gyr_bdy_meas(:,k);
+    w = meas.gyr_bdy_meas(:,k);
     
     % referent vector measurements
-    r = [mag_ref_meas(:,k), acc_ref_meas(:,k)];
+    r = [meas.mag_ref_meas(:,k), meas.acc_ref_meas(:,k)];
     % body vector measurements
-    b = [mag_bdy_meas(:,k), acc_bdy_meas(:,k)];
+    b = [meas.mag_bdy_meas(:,k), meas.acc_bdy_meas(:,k)];
     
     [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
-        Mu_noise_var, Eta_noise_var, dT);
+        meas.Mu_noise_var, meas.Eta_noise_var, dT);
     
     % store calculated K and q for debug
     K_est(:,:,k) = K;
@@ -65,7 +68,7 @@ for k = 2 : num_of_iter
 end
 
 % calculate RMS error in degrees
-angle_difference = rad2deg(angle_diff(euler_est, euler_gt)); % deg
+angle_difference = rad2deg(angle_diff(euler_est, meas.euler_gt)); % deg
 rms_err = sqrt(sum(angle_difference.^2)); % deg
 std_rms_err = sqrt(var(rms_err)); % deg
 
@@ -75,7 +78,7 @@ fprintf("std_rms_err_threshold = %f [deg]\n\n", std_rms_err_threshold);
 
 % plot angle errors
 figure(1);
-plot(t, angle_difference); 
+plot(meas.t, angle_difference); 
 title('Real vs Estimated Euler angles differences vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
@@ -83,7 +86,7 @@ saveas(gcf, 'figures/figure1.jpg');
 close
 
 figure(2);
-plot(t, rms_err); 
+plot(meas.t, rms_err); 
 title('Real vs Estimated Euler angles RMS error vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
