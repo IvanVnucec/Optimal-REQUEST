@@ -1,5 +1,5 @@
 % =========================== Info ==============================
-% About: Test the Optimal-REQUEST algorithm with GNU Octave
+% About: Test the Optimal-REQUEST algorithm with only the GNU Octave.
 %
 % Author:     Ivan Vnucec
 % University: FER, Zagreb
@@ -10,7 +10,8 @@
 % for debug
 clear all;
 
-addpath('../src')
+% add src, utils and gen_meas folders to path
+addpath('./../scripts', './../scripts/utils');
 
 std_rms_err_threshold = 1.5;    % Degrees, RMS error threshold for test pass or fail
 simulation_time  = 2000;        % Simulation time in seconds
@@ -145,8 +146,9 @@ angle_difference = rad2deg(angle_diff(euler_est, euler_gt)); % deg
 rms_err = sqrt(sum(angle_difference.^2)); % deg
 std_rms_err = sqrt(var(rms_err)); % deg
 
-printf("Std RMS error = %f [deg]\n", std_rms_err);
-printf("std_rms_err_threshold = %f [deg]\n\n", std_rms_err_threshold);
+% print errors to the output stream
+fprintf("Std RMS error = %f [deg]\n", std_rms_err);
+fprintf("std_rms_err_threshold = %f [deg]\n\n", std_rms_err_threshold);
 
 % plot angle errors
 figure(1);
@@ -154,7 +156,7 @@ plot(t, angle_difference);
 title('Real vs Estimated Euler angles differences vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
-print -djpg figure1.jpg
+saveas(gcf, 'figures/figure1.jpg');
 close
 
 figure(2);
@@ -162,13 +164,13 @@ plot(t, rms_err);
 title('Real vs Estimated Euler angles RMS error vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
-print -djpg figure2.jpg
+saveas(gcf, 'figures/figure1.jpg');
 close
 
 if std_rms_err < std_rms_err_threshold
-    printf("Test Succeded!")
+    fprintf("Test Succeded!")
     exit(0);
 else
-    printf("Test Failed: error greater than error threshold!");    
+    fprintf("Test Failed: error greater than error threshold!");    
     exit(1); % fail
 end

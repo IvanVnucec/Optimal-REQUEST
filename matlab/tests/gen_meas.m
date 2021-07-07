@@ -16,6 +16,9 @@ dT = 10;                    % Sampling time in seconds
 n  = [0 0 1]';              % Rotation vector (unnormalized)
 n_velocity = 1;                  % Angular velocity around rotation vector in rad/s
 
+% add utils to path
+addpath('./../scripts/utils');
+
 % === Sensors white Gauss zero mean noise ===
 % we got this values by measuring our IMU sensor
 acc_bdy_meas_noise_std = [0.01195    0.01202    0.01290]';        % m/s^2

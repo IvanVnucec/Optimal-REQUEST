@@ -7,7 +7,7 @@ all:
 
 .PHONY: matlab_run
 matlab_run:
-	octave matlab/main.m 
+	octave matlab/tests/run.m 
 
 .PHONY: matlab_test
 matlab_test:

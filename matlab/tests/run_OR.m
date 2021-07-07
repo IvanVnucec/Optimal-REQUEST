@@ -13,10 +13,13 @@
 % for debug
 clear all;
 rng('default');
-colordef black;
+colordef black
+
+% add scripts folder to path
+addpath('./../scripts');
 
 % generate all the data we need in main.m file
-generate_measurements
+gen_meas
 
 % ======================== algorithm output =====================
 K_est = zeros(4, 4, num_of_iter);
