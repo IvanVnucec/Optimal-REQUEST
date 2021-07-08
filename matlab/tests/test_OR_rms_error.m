@@ -41,29 +41,37 @@ k = 1; % k=1 because of MATLAB counting from 1 and not from 0
 r0 = [meas.mag_ref_meas(:,k), meas.acc_ref_meas(:,k)];
 b0 = [meas.mag_bdy_meas(:,k), meas.acc_bdy_meas(:,k)];
 
-[K, P, mk] = optimal_request_init(r0, b0, meas.Mu_noise_var);
+% fill a structure
+s.Rho = 0.0;
+s.w = zeros(size(meas.gyr_bdy_meas(:,k)));
+s.r = r0;
+s.b = b0;
+s.Mu_noise_var = meas.Mu_noise_var;
+s.Eta_noise_var = meas.Eta_noise_var;
+s.dT = meas.dT;
+
+s = optimal_request_init(s);
 
 % ======================== algorithm ============================
 for k = 2 : meas.num_of_iter
     % get angular velocity measurement
-    w = meas.gyr_bdy_meas(:,k);
+    s.w = meas.gyr_bdy_meas(:,k);
     
     % referent vector measurements
-    r = [meas.mag_ref_meas(:,k), meas.acc_ref_meas(:,k)];
+    s.r = [meas.mag_ref_meas(:,k), meas.acc_ref_meas(:,k)];
     % body vector measurements
-    b = [meas.mag_bdy_meas(:,k), meas.acc_bdy_meas(:,k)];
+    s.b = [meas.mag_bdy_meas(:,k), meas.acc_bdy_meas(:,k)];
     
-    [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
-        meas.Mu_noise_var, meas.Eta_noise_var, dT);
+    s = optimal_request(s);
     
     % store calculated K and q for debug
-    K_est(:,:,k) = K;
-    q = get_quat_from_K(K);
+    K_est(:,:,k) = s.K;
+    q = get_quat_from_K(s.K);
     q_est(:,k) = q;
     angle_est(:,k) = 2.0 * acos(abs(q(1)));
     euler_est(:,k) = qib2Euler(q);
-    Rho_est(k) = Rho;
-    P_est(:,:,k) = P;
+    Rho_est(k) = s.Rho;
+    P_est(:,:,k) = s.P;
 end
 
 % calculate RMS error in degrees
@@ -81,16 +89,16 @@ plot(meas.t, angle_difference);
 title('Real vs Estimated Euler angles differences vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
-saveas(gcf, 'figures/figure1.jpg');
-close
+saveas(gcf, 'figures/euler_angles_error.jpg');
+close;
 
 figure(2);
 plot(meas.t, rms_err); 
 title('Real vs Estimated Euler angles RMS error vs Time');
 xlabel('time [s]'); 
 ylabel('angle [deg]');
-saveas(gcf, 'figures/figure1.jpg');
-close
+saveas(gcf, 'figures/euler_angles_rms_error.jpg');
+close;
 
 if std_rms_err < std_rms_err_threshold
     test_passed = true;

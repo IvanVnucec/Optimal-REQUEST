@@ -40,8 +40,18 @@
 % Date:       May, 2021
 % License:    MIT
 
-function [K, P, mk, Rho] = optimal_request(K, P, mk, w, r, b, ...
-    Mu_noise_var, Eta_noise_var, dT)
+function [s] = optimal_request(s)
+
+% unpack structure for easier reading
+K = s.K;
+P = s.P;
+mk = s.mk;
+w = s.w;
+r = s.r;
+b = s.b;
+Mu_noise_var = s.Mu_noise_var;
+Eta_noise_var = s.Eta_noise_var;
+dT = s.dT;
 
 % Calculate one step of Optimal-REQUEST algorithm.
 
@@ -76,12 +86,15 @@ m = (1.0 - Rho) * mk + Rho * dm;
 dK = calculate_dK(r, b, a);
 
 % Ref. B eq. 72
-K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
+s.K = (1.0 - Rho) * mk / m * K + Rho * dm / m * dK;
 
 % Ref. B eq. 73
-P = ((1.0 - Rho) * mk / m)^2 * P + (Rho * dm / m)^2 * R;
+s.P = ((1.0 - Rho) * mk / m)^2 * P + (Rho * dm / m)^2 * R;
 
 % for the next iteration m_k = m_k+1
-mk = m;
+s.mk = m;
+
+% save Rho into the structure for debug purposes
+s.Rho = Rho;
 
 end
