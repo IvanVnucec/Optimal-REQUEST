@@ -15,8 +15,7 @@ function [test_passed] = test_OR_rms_error()
 % for debug
 clear all;
 
-% add src, utils and gen_meas folders to path
-addpath('./../scripts', './../scripts/utils');
+addpath('./../', './../utils');
 
 % ====================== TEST PARAMETERS ========================
 std_rms_err_threshold = 1.5;    % Degrees, RMS error threshold for test pass or fail

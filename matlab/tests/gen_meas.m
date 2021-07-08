@@ -21,7 +21,7 @@ n  = [0 0 1]';                  % Rotation vector (unnormalized)
 n_velocity = 1;                 % Angular velocity around rotation vector in rad/s
 
 % add utils to path
-addpath('./../scripts/utils');
+addpath('./../utils');
 
 % === Sensors white Gauss zero mean noise ===
 % we got this values by measuring our IMU sensor

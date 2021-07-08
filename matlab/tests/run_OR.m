@@ -15,8 +15,7 @@ clear all;
 rng('default');
 colordef black
 
-% add scripts folder to path
-addpath('./../scripts');
+addpath('./..', './../utils');
 
 % ====================== TEST PARAMETERS ========================
 simulation_time = 2000;     % simulation time in sec
