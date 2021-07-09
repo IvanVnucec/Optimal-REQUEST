@@ -1,14 +1,4 @@
-all:
-	@echo "help: \n\
-		make matlab_codegen_c - Generate C code from MATLAB code with the MATLAB Code generator \n \
-		make matlab_codegen_mex - Generate MATLAB MEX function with the MATLAB Code generator \n \
-		make matlab_run - Run Optimal-REQUEST algorithm in Matlab \n \
-		make octave_run - Run Optimal-REQUEST algorithm in GNU Octave \n \
-		make matlab_test - Run Optima-REQUEST tests in GNU Octave \n \
-		make install_gnu_octave - Installs GNU Octave with apt-get. You might want to run make with sudo \n \
-		make clean - Clean the generated code \n \
-	"
-
+all: help
 
 .PHONY: matlab_codegen_c
 matlab_codegen_c:
@@ -33,6 +23,16 @@ matlab_test:
 .PHONY: install_gnu_octave
 install_gnu_octave:
 	./scripts/install_gnu_octave.sh
+
+.PHONY: help
+help:
+	@echo "make matlab_codegen_c - Generate C code from MATLAB code with the MATLAB Code generator"
+	@echo "make matlab_codegen_mex - Generate MATLAB MEX function with the MATLAB Code generator"
+	@echo "make matlab_run - Run Optimal-REQUEST algorithm in Matlab"
+	@echo "make octave_run - Run Optimal-REQUEST algorithm in GNU Octave"
+	@echo "make matlab_test - Run Optima-REQUEST tests in GNU Octave"
+	@echo "make install_gnu_octave - Installs GNU Octave with apt-get. You might want to run make with sudo"
+	@echo "make clean - Clean the generated code"
 
 .PHONY: clean
 clean:
