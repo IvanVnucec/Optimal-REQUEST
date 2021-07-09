@@ -43,6 +43,10 @@ b = Sigma^2 + z' * z;
 c = Delta + z' * S * z;
 d = z' * S^2 * z;
 
+% TODO: Check method in eq. 72 in the reference above where we have
+% explicit equation for Lambda_max and we don't need to estimate it with
+% the Newton-Raphson method
+
 % Newton-Raphon method, 2 pass is enough
 % f(x)  = x^4 - (a + b)*x^2 - c*x + (a*b + c*Sigma - d)
 % f'(x) = 4*x^3 - 2*(a + b)*x - c
