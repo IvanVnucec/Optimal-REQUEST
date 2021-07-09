@@ -52,8 +52,9 @@ d = z' * S^2 * z;
 % f'(x) = 4*x^3 - 2*(a + b)*x - c
 Lambda = 1.0; % initial guess
 for i = 1:2
-    f  = Lambda^4 - (a + b)*Lambda^2 - c*Lambda + (a*b + c*Sigma - d);
-    df = 4*Lambda^3 - 2*(a + b)*Lambda - c;
+    % Horner nested polynomial representation
+    f = Sigma*c - d + a*b - Lambda*(c + Lambda*(- Lambda^2 + a + b));
+    df = - c - Lambda*(- 4*Lambda^2 + 2*a + 2*b);
     Lambda = Lambda - f/df;
 end
 
