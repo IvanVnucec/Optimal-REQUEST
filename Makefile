@@ -3,6 +3,7 @@ all:
 		make matlab_codegen_c - Generate C code from MATLAB code with the MATLAB Code generator \n \
 		make matlab_codegen_mex - Generate MATLAB MEX function with the MATLAB Code generator \n \
 		make matlab_run - Run Optimal-REQUEST algorithm in Matlab \n \
+		make octave_run - Run Optimal-REQUEST algorithm in GNU Octave \n \
 		make matlab_test - Run Optima-REQUEST tests in GNU Octave \n \
 		make install_gnu_octave - Installs GNU Octave with apt-get. You might want to run make with sudo \n \
 		make clean - Clean the generated code \n \
@@ -19,7 +20,11 @@ matlab_codegen_mex:
 
 .PHONY: matlab_run
 matlab_run:
-	octave matlab/tests/run.m 
+	./scripts/matlab_run.sh
+
+.PHONY: octave_run
+octave_run:
+	./scripts/octave_run.sh
 
 .PHONY: matlab_test
 matlab_test:
