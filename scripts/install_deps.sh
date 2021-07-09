@@ -14,4 +14,4 @@ clang-format-11 \
 ninja-build \
 octave
 
-pip3 install meson
+python3 -m pip install meson
