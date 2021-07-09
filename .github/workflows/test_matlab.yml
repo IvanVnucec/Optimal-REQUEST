@@ -25,7 +25,9 @@ jobs:
 
       - name: Install GNU Octave
         id: octave_install
-        run: sudo make install_gnu_octave
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y octave
 
       - name: Run tests
         if: ${{ success() }}

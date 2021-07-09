@@ -19,48 +19,26 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
-      - name: Cache Docker image
-        id: cache-docker-image
-        uses: actions/cache@v2
-        with:
-          path: ./tmp
-          key: |
-            ${{ runner.os }}-buildx-${{ hashFiles('./Dockerfile') }}
-
-      - name: Build Docker image if not cached
-        if: steps.cache-docker-image.outputs.cache-hit != 'true'
-        run: ./scripts/docker_image_build.sh
-
-      - name: Save Docker image if not cached
-        if: steps.cache-docker-image.outputs.cache-hit != 'true'
-        run: ./scripts/docker_image_save.sh
-
-      - name: Load cached Docker image
-        run: ./scripts/docker_image_load.sh
-
-      - name: Run Docker container
-        run: ./scripts/docker_container_run.sh
+      - name: Install dependencies
+        run: sudo ./scripts/install_deps.sh
 
       - name: Run Clang format check
-        run: ./scripts/docker_project_clang_format_check.sh
+        run: make clang_format_check
 
       - name: Build project
-        run: ./scripts/docker_project_build.sh
+        run: make build
         
       - name: Run cppcheck
-        run: ./scripts/docker_project_cppcheck.sh
+        run: make cppcheck
 
       - name: Test project
-        run: ./scripts/docker_project_test.sh
+        run: make test
 
       - name: Generate Code coverage report
-        run: ./scripts/docker_project_codecov.sh
+        run: make codecov
 
       - name: Generate Doxygen documentation
-        run: ./scripts/docker_project_doxygen.sh
-
-      - name: Stop Docker container
-        run: ./scripts/docker_container_stop.sh
+        run: make doxygen
         
       - name: Upload Meson logs
         uses: actions/upload-artifact@v2
