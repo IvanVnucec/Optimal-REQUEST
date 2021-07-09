@@ -82,11 +82,13 @@ help:
 	@echo "make matlab_run - Run Optimal-REQUEST algorithm in Matlab"
 	@echo "make octave_run - Run Optimal-REQUEST algorithm in GNU Octave"
 	@echo "make matlab_test - Run Optima-REQUEST tests in GNU Octave"
-	@echo "make clean - Clean the generated code"
+	@echo "make clean - Clean build artifacts."
+	@echo "make clean_matlab - Clean code from Matlab Code generator."
 
-.PHONY: clean_all
-clean_all: clean_matlab
+.PHONY: clean
+clean:
+	@rm -rf builddir
 
 .PHONY: clean_matlab
 clean_matlab:
-	rm -rf matlab/codegen matlab/get_quat_from_K_mex.mexa64
+	@rm -rf matlab/codegen matlab/get_quat_from_K_mex.mexa64
