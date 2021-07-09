@@ -34,6 +34,20 @@
 %   Markley, F. L.,
 %   http://malcolmdshuster.com/FC_Markley_1988_J_SVD_JAS_MDSscan.pdf
 %
+% 
+% Handle structure:
+% s = struct('w', zeros(3, 1), ...              % Angular velocity vector
+%     'r', r0, ...                              % reference sensor measurement
+%     'b', b0, ...                              % body sensor measurement
+%     'Mu_noise_var', meas.Mu_noise_var, ...    % sensor noise
+%     'Eta_noise_var', meas.Eta_noise_var, ...  % process noise
+%     'dT', meas.dT, ...                        % algorithm period of execution
+%     'K', zeros(4), ...                        % K matrix in Optimal-REQUEST algorithm
+%     'P', zeros(4), ...                        % P matrix...
+%     'mk', 0.0, ...                            % mk scalar...
+%     'Rho', 0.0);                              % Rho (Kalman gain)
+%
+%
 % =========================== Licence ============================
 % Author:     Ivan Vnucec
 % University: FER, Zagreb

@@ -8,6 +8,20 @@ function [s] = optimal_request_init(s)
 %   D. Choukroun,I. Y. Bar-Itzhack, and Y. Oshman,
 %   https://sci-hub.se/10.2514/1.10337
 %
+% 
+% Handle structure:
+% s = struct('w', zeros(3, 1), ...              % Angular velocity vector
+%     'r', r0, ...                              % reference sensor measurement
+%     'b', b0, ...                              % body sensor measurement
+%     'Mu_noise_var', meas.Mu_noise_var, ...    % sensor noise
+%     'Eta_noise_var', meas.Eta_noise_var, ...  % process noise
+%     'dT', meas.dT, ...                        % algorithm period of execution
+%     'K', zeros(4), ...                        % K matrix in Optimal-REQUEST algorithm
+%     'P', zeros(4), ...                        % P matrix...
+%     'mk', 0.0, ...                            % mk scalar...
+%     'Rho', 0.0);                              % Rho (Kalman gain)
+%
+%
 % Author:     Ivan Vnucec
 % University: FER, Zagreb
 % Date:       May, 2021
