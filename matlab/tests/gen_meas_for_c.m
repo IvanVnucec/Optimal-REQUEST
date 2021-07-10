@@ -23,11 +23,16 @@ fprintf(fileID, '// Author: Ivan Vnucec, 2021\n');
 fprintf(fileID, '// License: MIT\n\n');
 fprintf(fileID, '#ifndef TEST_MEAS_DATA_H\n');
 fprintf(fileID, '#define TEST_MEAS_DATA_H\n\n');
-fprintf(fileID, '#define MEAS_LEN (%d)\n\n', MEAS_LEN);
-fprintf(fileID, 'extern float test_meas_data_acc[MEAS_LEN][3];\n');
-fprintf(fileID, 'extern float test_meas_data_mag[MEAS_LEN][3];\n');
-fprintf(fileID, 'extern float test_meas_data_gyr[MEAS_LEN][3];\n');
-fprintf(fileID, 'extern float test_meas_data_euler_gt[MEAS_LEN][3];\n\n');
+fprintf(fileID, '#define TEST_MEAS_DATA_MEAS_LEN (%d)\n', MEAS_LEN);
+fprintf(fileID, '#define TEST_MEAS_DATA_MU_NOISE_VAR (%.7ff)\n', meas.Mu_noise_var);
+fprintf(fileID, '#define TEST_MEAS_DATA_ETA_NOISE_VAR (%.7ff)\n', meas.Eta_noise_var);
+fprintf(fileID, '#define TEST_MEAS_DATA_DT (%.7ff)\n\n', dT);
+fprintf(fileID, 'extern float test_meas_data_ref_acc[TEST_MEAS_DATA_MEAS_LEN][3];\n');
+fprintf(fileID, 'extern float test_meas_data_ref_mag[TEST_MEAS_DATA_MEAS_LEN][3];\n');
+fprintf(fileID, 'extern float test_meas_data_bdy_acc[TEST_MEAS_DATA_MEAS_LEN][3];\n');
+fprintf(fileID, 'extern float test_meas_data_bdy_mag[TEST_MEAS_DATA_MEAS_LEN][3];\n');
+fprintf(fileID, 'extern float test_meas_data_bdy_gyr[TEST_MEAS_DATA_MEAS_LEN][3];\n');
+fprintf(fileID, 'extern float test_meas_data_euler_gt[TEST_MEAS_DATA_MEAS_LEN][3];\n\n');
 fprintf(fileID, '#endif // TEST_MEAS_DATA_H\n');
 fclose(fileID);
 
@@ -38,23 +43,33 @@ fprintf(fileID, '// Author: Ivan Vnucec, 2021\n');
 fprintf(fileID, '// License: MIT\n\n');
 fprintf(fileID, '#include "test_meas_data.h"\n\n');
 
-%% Accelerometer data
-fprintf(fileID, 'float test_meas_data_acc[MEAS_LEN][3] = {\n');
+%% Accelerometer reference data
+fprintf(fileID, 'float test_meas_data_ref_acc[TEST_MEAS_DATA_MEAS_LEN][3] = {\n');
+fprintf(fileID, '    {%.7ff, %.7ff, %.7ff},\n', meas.acc_ref_meas);
+fprintf(fileID, '};\n\n');
+
+%% Magnetometer reference data
+fprintf(fileID, 'float test_meas_data_ref_mag[TEST_MEAS_DATA_MEAS_LEN][3] = {\n');
+fprintf(fileID, '    {%.7ff, %.7ff, %.7ff},\n', meas.mag_ref_meas);
+fprintf(fileID, '};\n\n');
+
+%% Accelerometer body data
+fprintf(fileID, 'float test_meas_data_bdy_acc[TEST_MEAS_DATA_MEAS_LEN][3] = {\n');
 fprintf(fileID, '    {%.7ff, %.7ff, %.7ff},\n', meas.acc_bdy_meas);
 fprintf(fileID, '};\n\n');
 
-%% Magnetometer data
-fprintf(fileID, 'float test_meas_data_mag[MEAS_LEN][3] = {\n');
+%% Magnetometer body data
+fprintf(fileID, 'float test_meas_data_bdy_mag[TEST_MEAS_DATA_MEAS_LEN][3] = {\n');
 fprintf(fileID, '    {%.7ff, %.7ff, %.7ff},\n', meas.mag_bdy_meas);
 fprintf(fileID, '};\n\n');
 
-%% Gyro data
-fprintf(fileID, 'float test_meas_data_gyr[MEAS_LEN][3] = {\n');
+%% Gyro body data
+fprintf(fileID, 'float test_meas_data_bdy_gyr[TEST_MEAS_DATA_MEAS_LEN][3] = {\n');
 fprintf(fileID, '    {%.7ff, %.7ff, %.7ff},\n', meas.gyr_bdy_meas);
 fprintf(fileID, '};\n\n');
 
 %% Euler ground truth
-fprintf(fileID, 'float test_meas_data_euler_gt[MEAS_LEN][3] = {\n');
+fprintf(fileID, 'float test_meas_data_euler_gt[TEST_MEAS_DATA_MEAS_LEN][3] = {\n');
 fprintf(fileID, '    {%.7ff, %.7ff, %.7ff},\n', meas.euler_gt);
 fprintf(fileID, '};\n\n');
 

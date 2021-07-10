@@ -11,7 +11,7 @@ test_example = executable(
 
 test_optimal_request_on_data = executable(
     'test_optimal_request_on_data', 
-    sources : ['test_optimal_request_on_data.c', 'test_meas_data.c'],
+    sources : ['test_optimal_request_on_data.c', 'test_meas_data.c', 'helper.c'],
     link_with : libs,
     include_directories : includes)
 
