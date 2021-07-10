@@ -114,10 +114,25 @@ MU_TEST(test_call_OR_functions) {
 	// check if cum rms error is within some threshold
 	float rms_error_mean, rms_error_std;
 	mean_std(&rms_error_mean, &rms_error_std, rms_errors, TEST_MEAS_DATA_MEAS_LEN);
-	printf("rms_error_mean = %f [deg]\n", rms_error_mean);
-	printf("rms_error_std  = %f [deg]\n", rms_error_std);
-	printf("3*rms_error_std  = %f [deg]\n", 3*rms_error_std);
-    mu_check(rms_error_std < 1.5f); // degrees
+	printf("C: rms_error_mean = %f [deg]\n", rms_error_mean);
+	printf("C: rms_error_std  = %f [deg]\n", rms_error_std);
+
+	FILE *fptr;
+    if ((fptr = fopen("../matlab/tests/test_results.txt", "r")) == NULL){
+        printf("Error! opening file ../matlab/tests/test_results.txt\n");
+        exit(1);
+    }
+
+	float matlab_code_rms_err_mean, matlab_code_rms_err_std;
+    fscanf(fptr, "%f\n%f", &matlab_code_rms_err_mean, &matlab_code_rms_err_std);
+    fclose(fptr);
+
+	printf("MATLAB: rms_error_mean = %f [deg]\n", matlab_code_rms_err_mean);
+	printf("MATLAB: rms_error_std  = %f [deg]\n", matlab_code_rms_err_std);
+
+	float eps = 0.01; // deg difference between matlab and c code implementation
+    mu_assert_float_eps_eq(matlab_code_rms_err_mean, rms_error_mean, eps);
+    mu_assert_float_eps_eq(matlab_code_rms_err_std, rms_error_std, eps);
 }
 
 MU_TEST_SUITE(test_suite) {

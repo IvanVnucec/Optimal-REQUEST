@@ -1,42 +1,15 @@
 {
-    "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Docker",
+            "name": "test",
             "type": "cppdbg",
             "request": "launch",
-            // file to debug
-            "program": "builddir/test/test_add",
+            "program": "${workspaceFolder}/builddir/test/test_optimal_request_on_data",
             "args": [],
             "stopAtEntry": true,
-            // "app" folder is defined in Dockerfile
-            "cwd": "/app",
+            "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": true,
-            "sourceFileMap": {
-                // "app" folder is defined in Dockerfile
-                "/app": "${workspaceFolder}"
-            },
-            "pipeTransport": {
-                // gdb path in Docker container
-                "debuggerPath": "/usr/bin/gdb",
-                "pipeProgram": "docker",
-                // "app" folder is defined in Dockerfile
-                "pipeArgs": [
-                    "run",
-                    "--rm",
-                    "--interactive",
-                    "--volume",
-                    "${workspaceFolder}:/app",
-                    "--workdir",
-                    "/app",
-                    "--privileged",
-                    "cont",
-                    "sh",
-                    "-c"
-                ],
-                "pipeCwd": ""
-            },
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -45,6 +18,25 @@
                     "ignoreFailures": true
                 }
             ]
-        }
+        },
+    {
+        "name": "demo",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/builddir/src/demo",
+        "args": [],
+        "stopAtEntry": true,
+        "cwd": "${fileDirname}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    }
     ]
 }

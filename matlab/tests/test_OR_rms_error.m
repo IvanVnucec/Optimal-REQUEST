@@ -81,6 +81,7 @@ end
 angle_difference = rad2deg(angle_diff(euler_est, meas.euler_gt)); % deg
 rms_err = sqrt(sum(angle_difference.^2)); % deg
 std_rms_err = sqrt(var(rms_err)); % deg
+mean_rms_err = mean(rms_err); %deg
 
 % print errors to the output stream
 fprintf("Std RMS error = %f [deg]\n", std_rms_err);
@@ -102,6 +103,12 @@ xlabel('time [s]');
 ylabel('angle [deg]');
 saveas(gcf, 'figures/euler_angles_rms_error.jpg');
 close;
+
+% save test results to file so we can compare it with implementation in C
+fileID = fopen('test_results.txt', 'w');
+fprintf(fileID, '%.7f\n', mean_rms_err);
+fprintf(fileID, '%.7f', std_rms_err);
+fclose(fileID);
 
 if std_rms_err < std_rms_err_threshold
     test_passed = true;

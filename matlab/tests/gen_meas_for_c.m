@@ -4,9 +4,8 @@ clear all;
 simulation_time  = 2000;        % Simulation time in seconds
 dT = 10;                        % Sensor sampling period in seconds
 
-% generate and load measurements
-measurements = gen_meas(simulation_time, dT);
-meas = load(measurements);
+% load measurements
+meas = load('measurements.mat');
 
 %meas.acc_bdy_meas
 %meas.mag_bdy_meas
