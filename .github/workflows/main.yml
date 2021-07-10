@@ -50,6 +50,3 @@ jobs:
           name: doxygen-files
           path: ./docs/Doxygen
         
-      - name: Upload code coverage reports to codecov.io page
-        run: bash <(curl -s https://codecov.io/bash) 
-
