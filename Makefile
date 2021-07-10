@@ -41,13 +41,17 @@ doxygen:
 
 .PHONY: matlab_codegen_c
 matlab_codegen_c:
-	cd matlab && \
-	matlab -batch "codegen_script_c"
+	@rm -rf matlab/codegen
+	@cd matlab && matlab -batch "codegen_script_c"
+	@mv src/opt_req/meson.build scripts
+	@rm -rf src/opt_req
+	@cp -R matlab/codegen/lib/get_quat_from_K src/opt_req
+	@mv scripts/meson.build src/opt_req/meson.build
+	@make clang_format
 
 .PHONY: matlab_codegen_mex
 matlab_codegen_mex:
-	cd matlab && \
-	matlab -batch "codegen_script_mex"
+	@cd matlab && matlab -batch "codegen_script_mex"
 
 .PHONY: matlab_run
 matlab_run:
