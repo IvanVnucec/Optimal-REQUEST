@@ -38,6 +38,7 @@ jobs:
         run: make doxygen
         
       - name: Upload Meson logs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: meson-logs
