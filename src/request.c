@@ -9,5 +9,3 @@
  */
 
 #include "request.h"
-
-#include "matrix_math.h"

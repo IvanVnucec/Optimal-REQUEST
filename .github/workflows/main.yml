@@ -15,9 +15,6 @@ jobs:
     steps:
       - name: Check Out Repo
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: recursive
 
       - name: Install dependencies
         run: sudo ./scripts/install_deps.sh

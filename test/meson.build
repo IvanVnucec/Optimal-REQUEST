@@ -13,8 +13,7 @@ test_test = executable(
     'test_test', 
     sources:                ['test_test.c'], 
     include_directories:    [inc],
-    c_args:                 [args], 
-    dependencies:           [m_dep, rt_dep, matrix_math_dep]
+    dependencies:           [m_dep, rt_dep]
 )
 
 test('test_test', test_test)

@@ -10,7 +10,6 @@
 
 #include "minunit.h"
 #include "request.h"
-#include "matrix_math.h"
 
 void test_setup(void) {
 }

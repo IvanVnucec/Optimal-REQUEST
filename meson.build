@@ -4,9 +4,6 @@
 
 project('c_matrix_library', 'c', default_options: ['c_std=c99', 'warning_level=3'])
 
-# Build libraries
-subdir('lib')
-
 # Build project
 subdir('src')
 
