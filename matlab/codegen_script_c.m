@@ -22,6 +22,7 @@ cfg.Toolchain = 'GNU gcc/g++ | gmake (64-bit Linux)';
 cfg.BuildConfiguration = 'Debug';
 cfg.HardwareImplementation.ProdHWDeviceType = 'Generic->32-bit Embedded Processor';
 cfg.HardwareImplementation.TargetHWDeviceType = 'Generic->32-bit Embedded Processor';
+cfg.IndentSize = 4;
 
 %% Define argument types for entry-point 'get_quat_from_K'.
 ARGS = cell(3,1);
