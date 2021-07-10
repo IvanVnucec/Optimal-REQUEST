@@ -130,7 +130,7 @@ MU_TEST(test_compare_matlab_and_c) {
 	printf("MATLAB: rms_error_mean = %f [deg]\n", matlab_code_rms_err_mean);
 	printf("MATLAB: rms_error_std  = %f [deg]\n", matlab_code_rms_err_std);
 
-	float eps = 0.01; // deg difference between matlab and c code implementation
+	float eps = 0.1f; // deg difference between matlab and c code implementation
     mu_assert_float_eps_eq(matlab_code_rms_err_mean, rms_error_mean, eps);
     mu_assert_float_eps_eq(matlab_code_rms_err_std, rms_error_std, eps);
 }
