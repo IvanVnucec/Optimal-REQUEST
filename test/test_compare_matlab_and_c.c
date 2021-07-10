@@ -19,7 +19,7 @@ void test_teardown(void) {
 	get_quat_from_K_terminate();
 }
 
-MU_TEST(test_call_OR_functions) {
+MU_TEST(test_compare_matlab_and_c) {
 	float q_est[4];
 	float euler_est[3], euler_gt[3];
 	float rms_errors[TEST_MEAS_DATA_MEAS_LEN];
@@ -136,7 +136,7 @@ MU_TEST(test_call_OR_functions) {
 }
 
 MU_TEST_SUITE(test_suite) {
-    MU_RUN_TEST(test_call_OR_functions);
+    MU_RUN_TEST(test_compare_matlab_and_c);
 }
 
 int main(int argc, char *argv[]) {
