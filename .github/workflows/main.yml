@@ -49,4 +49,12 @@ jobs:
         with:
           name: doxygen-files
           path: ./docs/Doxygen
-        
+      
+      - name: Cat meson-log
+        run: |
+          cat ./builddir/meson-logs/meson-log.txt
+
+      - name: Cat testlog
+        run: |
+          cat ./builddir/meson-logs/testlog.txt
+          
