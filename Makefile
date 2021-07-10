@@ -18,9 +18,7 @@ run: build
 #TODO: this needs some kind of exit status
 .PHONY: clang_format_check
 clang_format_check:
-	@mv scripts/run-clang-format.py .
-	@python3.8 run-clang-format.py -r src test
-	@mv run-clang-format.py scripts
+	@cd scripts && python3 run-clang-format.py -r ../src
 
 .PHONY: clang_format
 clang_format:
