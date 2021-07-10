@@ -2,5 +2,16 @@
 # Author: Ivan Vnucec
 # License: MIT
 
-executable('example_exe',
-    sources: ['main.c'])
+subdir('opt_req')
+
+inc_dirs = ['opt_req']
+
+srcs = ['main.c']
+
+libs = [opt_req]
+
+executable('demo',
+    srcs, 
+    link_with : libs, 
+    include_directories : inc_dirs)
+

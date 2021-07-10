@@ -1,9 +1,19 @@
 all: build
 
-#TODO: this needs build as dependancie
+.PHONY: build
+build: builddir
+	@meson compile -C builddir
+
+builddir:
+	@meson setup builddir
+
+.PHONY: test
+test: build
+	@meson test -C builddir
+
 .PHONY: run
-run:
-	./builddir/src/example_exe
+run: build
+	./builddir/src/demo
 
 #TODO: this needs some kind of exit status
 .PHONY: clang_format_check
@@ -14,10 +24,7 @@ clang_format_check:
 
 .PHONY: clang_format
 clang_format:
-	@clang-format-11 -i --verbose --style=file src/*.c
-	@clang-format-11 -i --verbose --style=file src/*.h
-	@clang-format-11 -i --verbose --style=file test/*.c
-	@clang-format-11 -i --verbose --style=file test/*.h
+	./scripts/clang_format.sh .
 
 .PHONY: codecov
 	@ninja coverage -v -C builddir
@@ -33,14 +40,6 @@ doxygen:
 	@doxygen Doxyfile
 	@echo "Done Generate Doxygen documentation."
 
-.PHONY: build
-build:
-	@CC=gcc meson builddir -Db_coverage=true
-	@meson compile -C builddir
-
-.PHONY: test
-test:
-	@meson test -C builddir
 
 .PHONY: matlab_codegen_c
 matlab_codegen_c:
@@ -69,7 +68,9 @@ matlab_test:
 
 .PHONY: help
 help:
-	@echo "make run - Run example"
+	@echo "make build - Build project"
+	@echo "make test - Run unit tests"
+	@echo "make run - Run demo example"
 	@echo "make clang_format_check - Check if the code is formatted."
 	@echo "make clang_format - Run Clang-format."
 	@echo "make codecov - Run code coverage."

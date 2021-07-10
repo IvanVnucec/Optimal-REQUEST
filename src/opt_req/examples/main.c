@@ -38,8 +38,6 @@
 #include "optimal_request.h"
 #include "optimal_request_init.h"
 
-#include <math.h>
-#include <stdio.h>
 #include <string.h>
 
 /* Function Declarations */
@@ -224,9 +222,6 @@ int main(int argc, const char *const argv[])
 {
     (void)argc;
     (void)argv;
-
-    printf("Hello world!\n");
-    printf("sqrt(2) = %f\n", sqrt(2.0));
 
     /* Initialize the application.
      You do not need to do this more than one time. */

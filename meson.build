@@ -2,7 +2,7 @@
 # Author: Ivan Vnucec
 # License: MIT
 
-project('c_matrix_library', 'c', default_options: ['c_std=c99', 'warning_level=3'])
+project('optimal_request', 'c', default_options: ['c_std=c99', 'warning_level=3'])
 
 # Build project
 subdir('src')
