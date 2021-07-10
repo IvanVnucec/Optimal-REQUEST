@@ -1,6 +1,6 @@
 # About: Meson build configuration for Unit tests.
 # Author: Ivan Vnucec
-# License WTFPL – Do What the Fuck You Want to Public License. See LICENSE.md file for more information.
+# License: MIT
 
 cc = meson.get_compiler('c')
 
