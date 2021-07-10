@@ -9,6 +9,7 @@ builddir:
 
 .PHONY: test
 test: build
+	@cd matlab/tests && octave gen_meas_for_c.m
 	@meson test -C builddir
 
 .PHONY: run
