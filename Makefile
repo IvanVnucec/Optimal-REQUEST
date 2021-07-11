@@ -46,15 +46,11 @@ matlab_run:
 	@cd matlab/tests && matlab -batch "run_OR"
 
 octave_run:
-	cd matlab/tests && \
-	octave test_OR_rms_error.m
+	@cd matlab/tests && octave --no-gui --no-window-system test_OR_rms_error.m
 
-.PHONY: matlab_test
 matlab_test:
-	cd matlab/tests && \
-	octave --no-gui run_tests.m
+	@cd matlab/tests && octave --no-gui --no-window-system run_tests.m
 
-.PHONY: help
 help:
 	@echo "make build - Build project"
 	@echo "make test - Run unit tests"
