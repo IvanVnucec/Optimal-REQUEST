@@ -1,38 +1,35 @@
+.PHONY: build test run clang_format_check clang_format codecov \
+	cppcheck matlab_codegen_c matlab_codegen_mex matlab_run octave_run \
+	matlab_test help clean clean_matlab
+
+
 all: build
 
-.PHONY: build
 build: builddir
 	@meson compile -C builddir
 
 builddir:
 	@meson setup builddir
 
-.PHONY: test
 test: build
 	@cd matlab/tests && octave test_OR_rms_error.m && octave gen_meas_for_c.m
 	@meson test -C builddir
 
-.PHONY: run
 run: build
-	./builddir/src/demo
+	@./builddir/src/demo
 
-#TODO: this needs some kind of exit status
-.PHONY: clang_format_check
 clang_format_check:
 	@cd scripts && python3 run-clang-format.py -r ../src
 
-.PHONY: clang_format
 clang_format:
-	./scripts/clang_format.sh .
+	@./scripts/clang_format.sh .
 
-.PHONY: codecov
+codecov:
 	@ninja coverage -v -C builddir
 
-.PHONY: cppcheck
 cppcheck:
 	@cppcheck --quiet --enable=all --project=./builddir/compile_commands.json
 
-.PHONY: matlab_codegen_c
 matlab_codegen_c:
 	@rm -rf matlab/codegen
 	@cd matlab && matlab -batch "codegen_script_c"
@@ -42,16 +39,12 @@ matlab_codegen_c:
 	@mv scripts/meson.build src/opt_req/meson.build
 	@make clang_format
 
-.PHONY: matlab_codegen_mex
 matlab_codegen_mex:
 	@cd matlab && matlab -batch "codegen_script_mex"
 
-.PHONY: matlab_run
 matlab_run:
-	cd matlab/tests && \
-	matlab -batch "run_OR"
+	@cd matlab/tests && matlab -batch "run_OR"
 
-.PHONY: octave_run
 octave_run:
 	cd matlab/tests && \
 	octave test_OR_rms_error.m
@@ -80,10 +73,8 @@ help:
 	@echo "make clean - Clean build artifacts."
 	@echo "make clean_matlab - Clean code from Matlab Code generator."
 
-.PHONY: clean
 clean:
 	@rm -rf builddir
 
-.PHONY: clean_matlab
 clean_matlab:
 	@rm -rf matlab/codegen matlab/get_quat_from_K_mex.mexa64
