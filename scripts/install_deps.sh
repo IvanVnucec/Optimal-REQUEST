@@ -8,7 +8,6 @@ cppcheck \
 gcc-10 \
 lcov \
 gdb \
-doxygen \
 graphviz \
 clang-format-11 \
 ninja-build \

@@ -32,14 +32,6 @@ clang_format:
 cppcheck:
 	@cppcheck --quiet --enable=all --project=./builddir/compile_commands.json
 
-.PHONY: doxygen
-doxygen:
-	@mkdir -p docs
-	@mkdir -p docs/Doxygen
-	@doxygen Doxyfile
-	@echo "Done Generate Doxygen documentation."
-
-
 .PHONY: matlab_codegen_c
 matlab_codegen_c:
 	@rm -rf matlab/codegen
@@ -78,7 +70,6 @@ help:
 	@echo "make clang_format - Run Clang-format."
 	@echo "make codecov - Run code coverage."
 	@echo "make cppcheck - Run Cppcheck."
-	@echo "make doxygen - Generate Doxygen documentation."
 	@echo "make build - Build project."
 	@echo "make test - Run unit tests."
 	@echo "make matlab_codegen_c - Generate C code from MATLAB code with the MATLAB Code generator"

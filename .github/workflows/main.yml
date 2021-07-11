@@ -33,9 +33,6 @@ jobs:
 
       - name: Generate Code coverage report
         run: make codecov
-
-      - name: Generate Doxygen documentation
-        run: make doxygen
         
       - name: Upload Meson logs
         if: always()
@@ -43,12 +40,6 @@ jobs:
         with:
           name: meson-logs
           path: ./builddir/meson-logs/
-
-      - name: Upload Doxygen files
-        uses: actions/upload-artifact@v2
-        with:
-          name: doxygen-files
-          path: ./docs/Doxygen
       
       - name: Cat meson-log
         run: |
