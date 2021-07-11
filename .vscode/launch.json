@@ -4,12 +4,13 @@
             "name": "test",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/builddir/test/test_optimal_request_on_data",
+            "program": "${workspaceFolder}/builddir/test/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
+            "preLaunchTask": "${defaultBuildTask}",
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -29,6 +30,7 @@
         "cwd": "${fileDirname}",
         "environment": [],
         "externalConsole": false,
+        "preLaunchTask": "${defaultBuildTask}",
         "MIMode": "gdb",
         "setupCommands": [
             {
