@@ -1,7 +1,6 @@
-.PHONY: build test run clang_format_check clang_format codecov \
+.PHONY: all build test run clang_format_check clang_format codecov \
 	cppcheck matlab_codegen_c matlab_codegen_mex matlab_run octave_run \
 	matlab_test help clean clean_matlab
-
 
 all: build
 
@@ -32,7 +31,7 @@ cppcheck:
 
 matlab_codegen_c:
 	@rm -rf matlab/codegen
-	@cd matlab && matlab -batch "codegen_script_c"
+	@matlab -sd matlab -noFigureWindows -batch "codegen_script_c"
 	@mv src/opt_req/meson.build scripts
 	@rm -rf src/opt_req
 	@cp -R matlab/codegen/lib/get_quat_from_K src/opt_req
@@ -40,10 +39,10 @@ matlab_codegen_c:
 	@make clang_format
 
 matlab_codegen_mex:
-	@cd matlab && matlab -batch "codegen_script_mex"
+	@matlab -sd matlab -noFigureWindows -batch "codegen_script_mex"
 
 matlab_run:
-	@cd matlab/tests && matlab -batch "run_OR"
+	@matlab -sd matlab/tests -noFigureWindows -batch "run_OR"
 
 octave_run:
 	@cd matlab/tests && octave --no-gui --no-window-system test_OR_rms_error.m
