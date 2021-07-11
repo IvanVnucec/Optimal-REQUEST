@@ -1,6 +1,6 @@
 .PHONY: all build test run clang_format_check clang_format codecov \
-	cppcheck matlab_codegen_c matlab_codegen_mex matlab_run octave_run \
-	matlab_test help clean clean_matlab
+	cppcheck matlab_codegen matlab_run octave_run matlab_test \
+	help clean clean_matlab
 
 all: build
 
@@ -32,7 +32,7 @@ cppcheck:
 	@mkdir -p logs
 	@cppcheck --std=c99 --template=gcc --output-file=logs/cppcheck.log --quiet --enable=all --project=./builddir/compile_commands.json
 
-matlab_codegen_c:
+matlab_codegen:
 	@rm -rf matlab/codegen
 	@matlab -sd matlab -noFigureWindows -batch "codegen_script_c"
 	@mv src/opt_req/meson.build scripts
@@ -40,9 +40,6 @@ matlab_codegen_c:
 	@cp -R matlab/codegen/lib/get_quat_from_K src/opt_req
 	@mv scripts/meson.build src/opt_req/meson.build
 	@make clang_format
-
-matlab_codegen_mex:
-	@matlab -sd matlab -noFigureWindows -batch "codegen_script_mex"
 
 matlab_run:
 	@matlab -sd matlab/tests -noFigureWindows -batch "run_OR"
@@ -63,8 +60,7 @@ help:
 	@echo "make cppcheck - Run Cppcheck."
 	@echo "make build - Build project."
 	@echo "make test - Run unit tests."
-	@echo "make matlab_codegen_c - Generate C code from MATLAB code with the MATLAB Code generator"
-	@echo "make matlab_codegen_mex - Generate MATLAB MEX function with the MATLAB Code generator"
+	@echo "make matlab_codegen - Generate C code from MATLAB code with the MATLAB Code generator"
 	@echo "make matlab_run - Run Optimal-REQUEST algorithm in Matlab"
 	@echo "make octave_run - Run Optimal-REQUEST algorithm in GNU Octave"
 	@echo "make matlab_test - Run Optima-REQUEST tests in GNU Octave"
