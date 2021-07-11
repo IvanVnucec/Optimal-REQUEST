@@ -27,7 +27,8 @@ codecov: build
 	@ninja -C builddir coverage-html
 
 cppcheck:
-	@cppcheck --quiet --enable=all --project=./builddir/compile_commands.json
+	@mkdir -p logs
+	@cppcheck --std=c99 --template=gcc --output-file=logs/cppcheck.log --quiet --enable=all --project=./builddir/compile_commands.json
 
 matlab_codegen_c:
 	@rm -rf matlab/codegen

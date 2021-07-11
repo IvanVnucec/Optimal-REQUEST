@@ -26,7 +26,9 @@ jobs:
         run: make build
         
       - name: Run cppcheck
-        run: make cppcheck
+        run: |
+          make cppcheck
+          cat logs/cppcheck.log
 
       - name: Test project
         run: make test
@@ -34,12 +36,14 @@ jobs:
       - name: Generate Code coverage report
         run: make codecov
         
-      - name: Upload Meson logs
+      - name: Upload build build artifacts
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: meson-logs
-          path: ./builddir/meson-logs/
+          name: build_artifacts
+          path: |
+            builddir/meson-logs
+            logs
       
       - name: Cat meson-log
         run: |
