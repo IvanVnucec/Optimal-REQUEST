@@ -1,5 +1,4 @@
-[![CI](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/main.yml)
-[![docs](https://img.shields.io/docsrs/regex?color=blue)](https://ivanvnucec.github.io/Optimal-REQUEST/)
+[![Build and test](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/build_and_test_c.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/build_and_test_c.yml)
 [![Test Matlab](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/test_matlab.yml/badge.svg)](https://github.com/IvanVnucec/Optimal-REQUEST/actions/workflows/test_matlab.yml)
 
 ## About The Project
