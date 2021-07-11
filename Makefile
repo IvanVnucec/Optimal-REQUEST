@@ -11,7 +11,9 @@ builddir:
 	@meson builddir -Db_coverage=true
 
 test: build
-	@cd matlab/tests && octave test_OR_rms_error.m && octave gen_meas_for_c.m
+	@cd matlab/tests && \
+		octave --no-gui --no-window-system test_OR_rms_error.m && \
+		octave --no-gui --no-window-system gen_meas_for_c.m
 	@meson test -C builddir
 
 run: build
