@@ -105,7 +105,8 @@ saveas(gcf, 'figures/euler_angles_rms_error.jpg');
 close;
 
 % save test results to file so we can compare it with implementation in C
-fileID = fopen('test_results.txt', 'w');
+mkdir ../../logs
+fileID = fopen('../../logs/test_OR_rms_error_results.log', 'w');
 fprintf(fileID, '%.7f\n', mean_rms_err);
 fprintf(fileID, '%.7f', std_rms_err);
 fclose(fileID);

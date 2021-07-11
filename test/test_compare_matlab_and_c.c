@@ -118,7 +118,7 @@ MU_TEST(test_compare_matlab_and_c) {
 	printf("C: rms_error_std  = %f [deg]\n", rms_error_std);
 
 	FILE *fptr;
-    if ((fptr = fopen("../matlab/tests/test_results.txt", "r")) == NULL){
+    if ((fptr = fopen("../logs/test_OR_rms_error_results.log", "r")) == NULL){
         printf("Error! opening file ../matlab/tests/test_results.txt\n");
         exit(1);
     }
