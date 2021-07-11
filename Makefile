@@ -5,10 +5,10 @@
 all: build
 
 build: builddir
-	@meson compile -C builddir
+	@ninja -C builddir
 
 builddir:
-	@meson setup builddir
+	@meson builddir -Db_coverage=true
 
 test: build
 	@cd matlab/tests && octave test_OR_rms_error.m && octave gen_meas_for_c.m
@@ -23,8 +23,8 @@ clang_format_check:
 clang_format:
 	@./scripts/clang_format.sh .
 
-codecov:
-	@ninja coverage -v -C builddir
+codecov: build
+	@ninja -C builddir coverage-html
 
 cppcheck:
 	@cppcheck --quiet --enable=all --project=./builddir/compile_commands.json
