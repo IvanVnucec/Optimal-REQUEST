@@ -15,5 +15,12 @@ test_compare_matlab_and_c = executable(
     link_with : libs,
     include_directories : includes)
 
+test_OR = executable(
+    'test_OR', 
+    sources : ['test_OR.c', 'test_meas_data.c', 'helper.c'],
+    link_with : libs,
+    include_directories : includes)
+
 test('test_example', test_example)
 test('test_compare_matlab_and_c', test_compare_matlab_and_c)
+test('test_OR', test_OR)
