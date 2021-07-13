@@ -15,6 +15,7 @@ test: build
 		octave --no-gui --no-window-system test_OR_rms_error.m && \
 		octave --no-gui --no-window-system gen_meas_for_c.m
 	@meson test -C builddir
+	@./scripts/clear_meas_data_c.sh
 
 run: build
 	@./builddir/src/demo
