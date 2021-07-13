@@ -18,7 +18,7 @@ clear all;
 addpath('./../', './../utils');
 
 % ====================== TEST PARAMETERS ========================
-max_rms_error_threshold = 4.0;  % degrees, RMS error mean threshold
+max_rms_error_threshold = 5.0;  % degrees, RMS error mean threshold
 
 simulation_time  = 2000;        % Simulation time in seconds
 dT = 10;                        % Sensor sampling period in seconds
