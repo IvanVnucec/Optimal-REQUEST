@@ -58,13 +58,8 @@ MU_TEST(test_compare_matlab_and_c) {
 	get_euler_from_q(euler_est, q_est);
 
 	// convert rad to deg
-	euler_est[0] = RAD2DEG(euler_est[0]);
-	euler_est[1] = RAD2DEG(euler_est[1]);
-	euler_est[2] = RAD2DEG(euler_est[2]);
-
-	euler_gt[0] = RAD2DEG(test_meas_data_euler_gt[0][0]);
-	euler_gt[1] = RAD2DEG(test_meas_data_euler_gt[0][1]);
-	euler_gt[2] = RAD2DEG(test_meas_data_euler_gt[0][2]);
+	rad2deg(euler_est, euler_est, 3);
+	rad2deg(euler_gt, test_meas_data_euler_gt[0], 3);
 
 	// calculate rms error
 	rms_errors[0] = euler_rms_error(euler_est, euler_gt);
@@ -99,13 +94,8 @@ MU_TEST(test_compare_matlab_and_c) {
 		get_euler_from_q(euler_est, q_est);
 
 		// convert rad to deg
-		euler_est[0] = RAD2DEG(euler_est[0]);
-		euler_est[1] = RAD2DEG(euler_est[1]);
-		euler_est[2] = RAD2DEG(euler_est[2]);
-
-		euler_gt[0] = RAD2DEG(test_meas_data_euler_gt[i][0]);
-		euler_gt[1] = RAD2DEG(test_meas_data_euler_gt[i][1]);
-		euler_gt[2] = RAD2DEG(test_meas_data_euler_gt[i][2]);
+		rad2deg(euler_est, euler_est, 3);
+		rad2deg(euler_gt, test_meas_data_euler_gt[i], 3);
 
 		// calculate rms error
 		rms_errors[i] = euler_rms_error(euler_est, euler_gt);

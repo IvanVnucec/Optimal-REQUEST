@@ -2,6 +2,18 @@
 
 #include "helper.h"
 
+void rad2deg(float *out, float *in, int len)
+{
+    for (int i=0; i<len; i++)
+        out[i] = RAD2DEG(in[i]);
+}
+
+void deg2rad(float *out, float *in, int len)
+{
+    for (int i=0; i<len; i++)
+        out[i] = DEG2RAD(in[i]);
+}
+
 void get_euler_from_q(float euler[3], float q[4]) 
 {
     float q1 = q[0];
