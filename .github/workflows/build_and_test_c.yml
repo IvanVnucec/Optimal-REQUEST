@@ -50,6 +50,7 @@ jobs:
           cat ./builddir/meson-logs/meson-log.txt
 
       - name: Cat testlog
+        if: always()
         run: |
           cat ./builddir/meson-logs/testlog.txt
           

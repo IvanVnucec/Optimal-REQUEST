@@ -11,6 +11,11 @@
 
 #include "helper.h"
 
+
+// difference between matlab and c code implementation
+#define MATLAB_AND_C_MAX_DIFF (0.05f) // degrees
+
+
 void test_setup(void) {
 	get_quat_from_K_initialize();
 }
@@ -133,9 +138,8 @@ MU_TEST(test_compare_matlab_and_c) {
 	printf("Difference Matlab & C: rms_err_std_diff = %f [deg]\n", 
 		matlab_code_rms_err_std - rms_error_std);
 
-	float eps = 0.01f; // deg difference between matlab and c code implementation
-    mu_assert_float_eps_eq(matlab_code_rms_err_mean, rms_error_mean, eps);
-    mu_assert_float_eps_eq(matlab_code_rms_err_std, rms_error_std, eps);
+    mu_assert_float_eps_eq(matlab_code_rms_err_mean, rms_error_mean, MATLAB_AND_C_MAX_DIFF);
+    mu_assert_float_eps_eq(matlab_code_rms_err_std, rms_error_std, MATLAB_AND_C_MAX_DIFF);
 }
 
 MU_TEST_SUITE(test_suite) {
