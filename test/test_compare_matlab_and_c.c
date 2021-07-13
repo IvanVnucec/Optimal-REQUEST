@@ -46,6 +46,22 @@ void or_fill_w(float w[3], float vec_w[3])
 	w[2] = vec_w[2];
 }
 
+void read_matlab_exec_log(const char *path, float *mean, float *std) 
+{
+	FILE *fptr;
+	const char *str_format = \
+		"rms_error_mean = %f [deg]\n" \
+		"rms_error_std = %f [deg]";
+
+    if ((fptr = fopen(path, "r")) == NULL){
+        printf("Error! opening file '%s'!\n", path);
+        exit(1);
+    }
+
+	fscanf(fptr, str_format, mean, std);
+    fclose(fptr);
+}
+
 MU_TEST(test_compare_matlab_and_c) {
 	float q_est[4];
 	float euler_est[3], euler_gt[3];
@@ -106,16 +122,10 @@ MU_TEST(test_compare_matlab_and_c) {
 	printf("C: rms_error_mean = %f [deg]\n", rms_error_mean);
 	printf("C: rms_error_std  = %f [deg]\n", rms_error_std);
 
-	FILE *fptr;
-    if ((fptr = fopen("../logs/test_OR_rms_error_results.log", "r")) == NULL){
-        printf("Error! opening file ../matlab/tests/test_results.txt\n");
-        exit(1);
-    }
-
 	float matlab_code_rms_err_mean, matlab_code_rms_err_std;
-    fscanf(fptr, "%f\n%f", &matlab_code_rms_err_mean, &matlab_code_rms_err_std);
-    fclose(fptr);
-
+	read_matlab_exec_log("../logs/test_OR_rms_error_results.log", 
+		&matlab_code_rms_err_mean, &matlab_code_rms_err_std);
+	
 	printf("MATLAB: rms_error_mean = %f [deg]\n", matlab_code_rms_err_mean);
 	printf("MATLAB: rms_error_std  = %f [deg]\n", matlab_code_rms_err_std);
 	printf("Difference Matlab & C: rms_err_mean_diff = %f [deg]\n", 
