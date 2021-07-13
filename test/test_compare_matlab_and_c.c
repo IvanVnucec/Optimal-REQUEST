@@ -19,6 +19,33 @@ void test_teardown(void) {
 	get_quat_from_K_terminate();
 }
 
+void or_fill_r(float r[6], float vec1[3], float vec2[3])
+{
+	r[0] = vec1[0];
+	r[1] = vec1[1];
+	r[2] = vec1[2];
+	r[3] = vec2[0];
+	r[4] = vec2[1];
+	r[5] = vec2[2];
+}
+
+void or_fill_b(float b[6], float vec1[3], float vec2[3])
+{
+	b[0] = vec1[0];
+	b[1] = vec1[1];
+	b[2] = vec1[2];
+	b[3] = vec2[0];
+	b[4] = vec2[1];
+	b[5] = vec2[2];
+}
+
+void or_fill_w(float w[3], float vec_w[3])
+{
+	w[0] = vec_w[0];
+	w[1] = vec_w[1];
+	w[2] = vec_w[2];
+}
+
 MU_TEST(test_compare_matlab_and_c) {
 	float q_est[4];
 	float euler_est[3], euler_gt[3];
@@ -31,23 +58,9 @@ MU_TEST(test_compare_matlab_and_c) {
 	or_handle.dT = TEST_MEAS_DATA_DT;
 
 	// first measurements
-	or_handle.r[0] = test_meas_data_ref_acc[0][0];
-	or_handle.r[1] = test_meas_data_ref_acc[0][1];
-	or_handle.r[2] = test_meas_data_ref_acc[0][2];
-	or_handle.r[3] = test_meas_data_ref_mag[0][0];
-	or_handle.r[4] = test_meas_data_ref_mag[0][1];
-	or_handle.r[5] = test_meas_data_ref_mag[0][2];
-
-	or_handle.b[0] = test_meas_data_bdy_acc[0][0];
-	or_handle.b[1] = test_meas_data_bdy_acc[0][1];
-	or_handle.b[2] = test_meas_data_bdy_acc[0][2];
-	or_handle.b[3] = test_meas_data_bdy_mag[0][0];
-	or_handle.b[4] = test_meas_data_bdy_mag[0][1];
-	or_handle.b[5] = test_meas_data_bdy_mag[0][2];
-
-	or_handle.w[0] = test_meas_data_bdy_gyr[0][0];
-	or_handle.w[1] = test_meas_data_bdy_gyr[0][1];
-	or_handle.w[2] = test_meas_data_bdy_gyr[0][2];
+	or_fill_r(or_handle.r, test_meas_data_ref_acc[0], test_meas_data_ref_mag[0]);
+	or_fill_b(or_handle.b, test_meas_data_bdy_acc[0], test_meas_data_bdy_mag[0]);
+	or_fill_w(or_handle.w, test_meas_data_bdy_gyr[0]);
 
 	// init optimal_req on 1st meas
 	optimal_request_init(&or_handle);
@@ -66,23 +79,9 @@ MU_TEST(test_compare_matlab_and_c) {
 
 	for (int i=1; i<TEST_MEAS_DATA_MEAS_LEN; i++) {
 		// fill r and b vectors with measurements
-		or_handle.r[0] = test_meas_data_ref_acc[i][0];
-		or_handle.r[1] = test_meas_data_ref_acc[i][1];
-		or_handle.r[2] = test_meas_data_ref_acc[i][2];
-		or_handle.r[3] = test_meas_data_ref_mag[i][0];
-		or_handle.r[4] = test_meas_data_ref_mag[i][1];
-		or_handle.r[5] = test_meas_data_ref_mag[i][2];
-
-		or_handle.b[0] = test_meas_data_bdy_acc[i][0];
-		or_handle.b[1] = test_meas_data_bdy_acc[i][1];
-		or_handle.b[2] = test_meas_data_bdy_acc[i][2];
-		or_handle.b[3] = test_meas_data_bdy_mag[i][0];
-		or_handle.b[4] = test_meas_data_bdy_mag[i][1];
-		or_handle.b[5] = test_meas_data_bdy_mag[i][2];
-
-		or_handle.w[0] = test_meas_data_bdy_gyr[i][0];
-		or_handle.w[1] = test_meas_data_bdy_gyr[i][1];
-		or_handle.w[2] = test_meas_data_bdy_gyr[i][2];
+		or_fill_r(or_handle.r, test_meas_data_ref_acc[i], test_meas_data_ref_mag[i]);
+		or_fill_b(or_handle.b, test_meas_data_bdy_acc[i], test_meas_data_bdy_mag[i]);
+		or_fill_w(or_handle.w, test_meas_data_bdy_gyr[i]);
 
 		// call optimal req on meas
 		optimal_request(&or_handle);
@@ -119,6 +118,10 @@ MU_TEST(test_compare_matlab_and_c) {
 
 	printf("MATLAB: rms_error_mean = %f [deg]\n", matlab_code_rms_err_mean);
 	printf("MATLAB: rms_error_std  = %f [deg]\n", matlab_code_rms_err_std);
+	printf("Difference Matlab & C: rms_err_mean_diff = %f [deg]\n", 
+		matlab_code_rms_err_mean - rms_error_mean);
+	printf("Difference Matlab & C: rms_err_std_diff = %f [deg]\n", 
+		matlab_code_rms_err_std - rms_error_std);
 
 	float eps = 0.1f; // deg difference between matlab and c code implementation
     mu_assert_float_eps_eq(matlab_code_rms_err_mean, rms_error_mean, eps);
