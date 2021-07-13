@@ -18,7 +18,8 @@ clear all;
 addpath('./../', './../utils');
 
 % ====================== TEST PARAMETERS ========================
-std_rms_err_threshold = 1.5;    % Degrees, RMS error threshold for test pass or fail
+max_rms_error_threshold = 4.0;  % degrees, RMS error mean threshold
+
 simulation_time  = 2000;        % Simulation time in seconds
 dT = 10;                        % Sensor sampling period in seconds
 
@@ -83,10 +84,6 @@ rms_err = sqrt(sum(angle_difference.^2)); % deg
 std_rms_err = sqrt(var(rms_err)); % deg
 mean_rms_err = mean(rms_err); %deg
 
-% print errors to the output stream
-fprintf("Std RMS error = %f [deg]\n", std_rms_err);
-fprintf("std_rms_err_threshold = %f [deg]\n\n", std_rms_err_threshold);
-
 % plot angle errors
 figure(1);
 plot(meas.t, angle_difference); 
@@ -111,7 +108,16 @@ fprintf(fileID, 'rms_error_mean = %.7f [deg]\n', mean_rms_err);
 fprintf(fileID, 'rms_error_std = %.7f [deg]', std_rms_err);
 fclose(fileID);
 
-if std_rms_err < std_rms_err_threshold
+% calculate max error
+max_rms_error = mean_rms_err + 3*std_rms_err;
+
+% print errors to the output stream
+fprintf("Mean RMS error = %f [deg]\n", mean_rms_err);
+fprintf("Std RMS error = %f [deg]\n", std_rms_err);
+fprintf("max_rms_error = %f\n", max_rms_error);
+fprintf("max_rms_error_threshold = %f [deg]\n\n", max_rms_error_threshold);
+
+if max_rms_error < max_rms_error_threshold
     test_passed = true;
 else
     test_passed = false;
