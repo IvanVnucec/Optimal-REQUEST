@@ -1,6 +1,6 @@
 .PHONY: all build test run clang_format_check clang_format codecov \
 	cppcheck matlab_codegen matlab_run octave_run matlab_test \
-	help clean clean_matlab
+	help clean clean_matlab lib_size
 
 all: build
 
@@ -53,6 +53,9 @@ octave_run:
 matlab_test:
 	@cd matlab/tests && octave --no-gui --no-window-system run_tests.m
 
+lib_size:
+	@size builddir/src/opt_req/libopt_req.a --format=SysVD
+
 help:
 	@echo "make build - Build project"
 	@echo "make test - Run unit tests"
@@ -69,6 +72,7 @@ help:
 	@echo "make matlab_test - Run Optima-REQUEST tests in GNU Octave"
 	@echo "make clean - Clean build artifacts."
 	@echo "make clean_matlab - Clean code from Matlab Code generator."
+	@echo "make lib_size - Show Optimal-REQUEST library size."
 
 clean:
 	@rm -rf builddir
