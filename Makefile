@@ -18,7 +18,9 @@ test: build
 	@./scripts/clear_meas_data_c.sh
 
 run: build
+	@cd matlab/tests && octave --no-gui --no-window-system gen_meas_for_c.m
 	@./builddir/src/demo
+	@./scripts/clear_meas_data_c.sh
 
 clang_format_check:
 	@cd scripts && python3 run-clang-format.py -r ../src
