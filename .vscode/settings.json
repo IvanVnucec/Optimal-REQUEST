@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "optimal_request.h": "c",
-        "test_meas_data.h": "c",
-        "*.tcc": "c",
-        "math.h": "c"
-    }
-}
