@@ -5,9 +5,9 @@
 
 #include "test_meas_data.h"
 
-float test_meas_data_ref_acc[TEST_MEAS_DATA_MEAS_LEN][3];
-float test_meas_data_ref_mag[TEST_MEAS_DATA_MEAS_LEN][3];
-float test_meas_data_bdy_acc[TEST_MEAS_DATA_MEAS_LEN][3];
-float test_meas_data_bdy_mag[TEST_MEAS_DATA_MEAS_LEN][3];
-float test_meas_data_bdy_gyr[TEST_MEAS_DATA_MEAS_LEN][3];
-float test_meas_data_euler_gt[TEST_MEAS_DATA_MEAS_LEN][3];
+float test_meas_data_ref_acc[TEST_MEAS_DATA_MEAS_LEN][3];   // m/s^2
+float test_meas_data_ref_mag[TEST_MEAS_DATA_MEAS_LEN][3];   // uT
+float test_meas_data_bdy_acc[TEST_MEAS_DATA_MEAS_LEN][3];   // m/s^2
+float test_meas_data_bdy_mag[TEST_MEAS_DATA_MEAS_LEN][3];   // uT
+float test_meas_data_bdy_gyr[TEST_MEAS_DATA_MEAS_LEN][3];   // rad/s
+float test_meas_data_euler_gt[TEST_MEAS_DATA_MEAS_LEN][3];  // rad
