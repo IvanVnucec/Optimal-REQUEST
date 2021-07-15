@@ -8,10 +8,14 @@ inc_dirs = ['opt_req']
 
 srcs = ['main.c']
 
-libs = [opt_req]
+libs = []
 
-executable('demo',
-    srcs, 
-    link_with : libs, 
-    include_directories : inc_dirs)
+if not meson.is_cross_build()
+    libs += [opt_req]
+    
+    executable('demo',
+        srcs, 
+        link_with : libs, 
+        include_directories : inc_dirs)
+endif
 

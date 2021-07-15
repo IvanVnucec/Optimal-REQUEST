@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Check Out Repo
@@ -35,13 +35,18 @@ jobs:
 
       - name: Generate Code coverage report
         run: make codecov
+
+      - name: Generate O.R. static library for ARM Cortex-m4
+        run: make cross_build
         
-      - name: Upload build build artifacts
+      - name: Upload build artifacts
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: build_artifacts
           path: |
+            cross_builddir/meson-logs
+            cross_builddir/src/opt_req/libopt_req_cross.a
             builddir/meson-logs
             logs
       

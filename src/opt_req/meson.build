@@ -4,7 +4,10 @@
 
 cc = meson.get_compiler('c')
 
-m_dep = cc.find_library('m', required : true)
+m_dep = []
+if not meson.is_cross_build()
+    m_dep += cc.find_library('m', required : true)
+endif
 
 srcs = [
     'get_quat_from_K_data.c',
@@ -27,8 +30,17 @@ srcs = [
 
 deps = [m_dep]
 
-opt_req = static_library(
-    'opt_req', 
-    srcs,
-    dependencies : deps,
-    install : true)
+if not meson.is_cross_build()
+    opt_req = static_library(
+        'opt_req', 
+        srcs,
+        dependencies : deps,
+        install : true)
+else
+    opt_req_cross = static_library(
+        'opt_req_cross', 
+        srcs,
+        dependencies : deps,
+        link_args : ['-lm'],
+        install : true)
+endif

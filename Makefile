@@ -1,6 +1,6 @@
 .PHONY: all build test run clang_format_check clang_format codecov \
 	cppcheck matlab_codegen matlab_run octave_run matlab_test \
-	help clean clean_matlab lib_size
+	help clean clean_matlab lib_size cross_build cross_size
 
 all: build
 
@@ -56,6 +56,16 @@ matlab_test:
 lib_size:
 	@size builddir/src/opt_req/libopt_req.a --format=SysVD
 
+cross_build: cross_builddir
+	@ninja -C cross_builddir
+	@make cross_size
+
+cross_builddir:
+	@meson cross_builddir --cross-file cross_file.cfg -Dbuildtype=minsize
+
+cross_size:
+	@arm-none-eabi-size cross_builddir/src/opt_req/libopt_req_cross.a --totals --format=gnu
+
 help:
 	@echo "make build - Build project"
 	@echo "make test - Run unit tests"
@@ -75,7 +85,7 @@ help:
 	@echo "make lib_size - Show Optimal-REQUEST library size."
 
 clean:
-	@rm -rf builddir
+	@rm -rf builddir cross_builddir
 
 clean_matlab:
 	@rm -rf matlab/codegen matlab/get_quat_from_K_mex.mexa64
