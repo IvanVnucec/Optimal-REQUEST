@@ -38,5 +38,5 @@ jobs:
         if: ${{ failure() && steps.octave_install.outcome == 'success' }}
         uses: actions/upload-artifact@ee69f02b3dfdecd58bb31b4d133da38ba6fe3700
         with:
-          name: plot
-          path: matlab/tests/figures/*.jpg
+          name: matlab_plots
+          path: matlab/tests/figures
