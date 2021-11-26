@@ -19,10 +19,10 @@ Project is built using [Meson](https://mesonbuild.com/) build system.
 TODO
 
 ## Usage
-TODO
+See [main.c](https://github.com/IvanVnucec/Optimal-REQUEST/blob/master/src/main.c) file for an example.
 
 ## Testing
-TODO
+See [test](https://github.com/IvanVnucec/Optimal-REQUEST/tree/master/test) folder.
 
 ## Matlab
 The Optimal-REQUEST algorithm was firstly implemented in MATLAB. The implementation is located in the `matlab` directory.  
