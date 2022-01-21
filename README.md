@@ -62,6 +62,9 @@ Function computes the incremental dK matrix used in Optimal-REQUEST algorithm.
 Function computes difference between the angles. The result is in the interval [-pi pi).
 
 
+## Documentation
+In the [docs](docs) folder, there is a [document](docs/optimal_request_croatian.pdf) about development of the Optimal-REQUEST in Croatian language.
+
 ## Acknowledges
 ```
 Optimal-REQUEST Algorithm for Attitude Determination  
